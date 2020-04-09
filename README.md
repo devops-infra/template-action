@@ -12,10 +12,9 @@ This is just a template repository.
 ![GitHub last commit](https://img.shields.io/github/last-commit/christophshyper/template-action?color=brightgreen&label=Last%20commit&style=flat-square&logo=github)
 ](https://github.com/christophshyper/template-action "shields.io")
 [![Push to master](https://img.shields.io/github/workflow/status/christophshyper/template-action/Push%20to%20master?color=brightgreen&label=Master%20branch&logo=github&style=flat-square)
-](https://github.com/ChristophShyper/template-action/actions?query=workflow%3A%22Push++to++master%22)
+](https://github.com/ChristophShyper/template-action/actions?query=workflow%3A%22Push+to+master%22)
 [![Push to other](https://img.shields.io/github/workflow/status/christophshyper/template-action/Push%20to%20other?color=brightgreen&label=Other%20branches&logo=github&style=flat-square)
-](https://github.com/ChristophShyper/template-action/actions?query=workflow%3A%22Push++to++other%22)
-
+](https://github.com/ChristophShyper/template-action/actions?query=workflow%3A%22Push+to+other%22)
 [
 ![DockerHub](https://img.shields.io/badge/docker-christophshyper%2Ftemplate--action-blue.svg?style=flat-square&logo=docker)
 ![Dockerfile size](https://img.shields.io/github/size/christophshyper/template-action/Dockerfile?label=Dockerfile&style=flat-square&logo=docker)
