@@ -11,8 +11,6 @@ This is just a template repository.
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/christophshyper/template-action?color=brightgreen&label=Code%20size&style=flat-square&logo=github)
 ![GitHub last commit](https://img.shields.io/github/last-commit/christophshyper/template-action?color=brightgreen&label=Last%20commit&style=flat-square&logo=github)
 ](https://github.com/christophshyper/template-action "shields.io")
-[![Push to any](https://img.shields.io/github/workflow/status/christophshyper/template-action/Push%20to%20any?color=brightgreen&label=All%20branches&logo=github&style=flat-square)
-](https://github.com/ChristophShyper/template-action/actions?query=workflow%3A%22Push++to++any%22)
 [![Push to master](https://img.shields.io/github/workflow/status/christophshyper/template-action/Push%20to%20master?color=brightgreen&label=Master%20branch&logo=github&style=flat-square)
 ](https://github.com/ChristophShyper/template-action/actions?query=workflow%3A%22Push++to++master%22)
 [![Push to other](https://img.shields.io/github/workflow/status/christophshyper/template-action/Push%20to%20other?color=brightgreen&label=Other%20branches&logo=github&style=flat-square)
