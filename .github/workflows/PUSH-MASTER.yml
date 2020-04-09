@@ -6,7 +6,7 @@ on:
 
 jobs:
   lint:
-    name: Linters
+    name: Run linters
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -18,7 +18,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   build_and_push:
-    name: Build and push
+    name: Build and push image
     needs: lint
     runs-on: ubuntu-latest
     steps:
