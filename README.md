@@ -1,4 +1,4 @@
-# Copy variables to many Terraform modules at once
+# GitHub Action template
 
 Dockerized ([christophshyper/template-action](https://hub.docker.com/repository/docker/christophshyper/template-action)) GitHub Action template.
 
