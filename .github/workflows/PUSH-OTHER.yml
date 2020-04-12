@@ -44,7 +44,7 @@ jobs:
           path: ./.github/PULL_REQUEST_TEMPLATE.md
 
       - name: Create pull request - bug (conditional)
-        if: startsWith(github.ref, 'refs/heads/enhancement')
+        if: startsWith(github.ref, 'refs/heads/bug')
         uses: repo-sync/pull-request@v2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

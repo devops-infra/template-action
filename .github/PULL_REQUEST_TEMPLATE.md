@@ -10,4 +10,4 @@
 ### Additional information
 * [ ] Issue has be created (paste a link in the description)
 
-*Check [CONTRIBUTING.md](../blob/master/github/CONTRIBUTING.md) for more information*
+*Check [CONTRIBUTING.md](../blob/master/.github/CONTRIBUTING.md) for more information*
