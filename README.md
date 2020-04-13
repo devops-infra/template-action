@@ -1,6 +1,6 @@
 # GitHub Action template
 
-Template repository for GitHub Actions. Dockerized as ([christophshyper/template-action](https://hub.docker.com/repository/docker/christophshyper/template-action)).
+Template repository for GitHub Actions. Dockerized as [christophshyper/template-action](https://hub.docker.com/repository/docker/christophshyper/template-action).
 
 **This is just a template repository.**
 
@@ -29,7 +29,7 @@ Template repository for GitHub Actions. Dockerized as ([christophshyper/template
 
 ```yaml
     - name: Run the Action
-      uses: docker://christophshyper/template-action:latest
+      uses: ChristophShyper/template-action@master
       env:
         bar: barfoo
       with:
@@ -63,7 +63,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Run the Action
-        uses: ChristophShyper/template-action:master
+        uses: ChristophShyper/template-action@master
 ```
 
 Run the Action via DockerHub.
