@@ -1,6 +1,8 @@
 # GitHub Action template
 
-Template repository for GitHub Actions. Dockerized as [christophshyper/template-action](https://hub.docker.com/repository/docker/christophshyper/template-action).
+Template repository for GitHub Actions. 
+
+Dockerized as [christophshyper/template-action](https://hub.docker.com/repository/docker/christophshyper/template-action).
 
 **This is just a template repository.**
 
