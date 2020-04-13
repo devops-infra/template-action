@@ -60,10 +60,10 @@ jobs:
   template-action:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-    - name: Run the Action
-      uses: ChristophShyper/template-action:master
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Run the Action
+        uses: ChristophShyper/template-action:master
 ```
 
 Run the Action via DockerHub.
@@ -75,12 +75,12 @@ jobs:
   template-action:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repoistory
-      uses: actions/checkout@v2
-    - name: Run the Action
-      uses: docker://christophshyper/template-action:latest
-      env:
-        bar: foo
-      with:
-        bar: baz
+      - name: Checkout repoistory
+        uses: actions/checkout@v2
+      - name: Run the Action
+        uses: docker://christophshyper/template-action:latest
+        env:
+          bar: foo
+        with:
+          bar: baz
 ```
