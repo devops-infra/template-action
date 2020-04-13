@@ -8,26 +8,27 @@ Rules for contribution are very simple.
 * Big fixes should be pushed to branches starting with `bug/...`.
 * New features should be pushed to branches starting with `enhancement/...`.
 * Updates to documentation should be pushed to branches starting with `documentation/...`.
-* If the changes apply to both categories.
+* If the changes apply to more than one category any other name best fitting should be used.
 
 
 ### Commit messages
-* Should start with the verb describing what was made in a past form (`Added...`, `Fixed...`, `Changed...`, `Removed...`).
+* Should start with the verb describing what was made, in a past form (`Added...`, `Fixed...`, `Changed...`, `Updated...`).
 * Should give brief description about purpose of the commit (`...README.md for a new usage`).
 * Can provide file names or longer description in a body of the commit.
 
 
-### Issues
-* Template should be created with automatic template.
-* Provide a title and a description of your request as well explained as possible.
-* All applicable boxes should be checked.
-* Any applicable label should be selected.
-
-
 ### Pull requests
-* Are created automatically after pushing commits to a new branch.
-* Edit description check all applicable boxes and change title if needed.
-* Add description and make sure
+* Are created automatically, using automated template, after pushing commits to a new branch.
+* Description should address points listed in the template.
+* Check all applicable boxes. Change title if needed.
+* Any other applicable label should be selected.
+
+
+### Issues
+* Issue should be created with available template.
+* Description should address points listed in the template.
+* Check all applicable boxes. Change title if needed.
+* Any applicable label should be selected.
 
 
 ### Code of Conduct
