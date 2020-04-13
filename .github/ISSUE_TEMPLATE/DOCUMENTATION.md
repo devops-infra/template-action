@@ -1,7 +1,7 @@
 ---
 name: Update documentation
 about: Request update of the documentation.
-title: ':large_blue_diamond: [TITLE]'
+title: 'TITLE'
 labels: 'documentation'
 assignees: 'ChristophShyper'
 
@@ -9,7 +9,7 @@ assignees: 'ChristophShyper'
 ### Brief description
 <!-- Write here... >>> -->
 
-**Write you description here**
+*Write you description here*
 
 <!-- <<< ...write here -->
 ### Additional information

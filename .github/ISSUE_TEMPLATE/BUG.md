@@ -1,7 +1,7 @@
 ---
 name: Bug report
 about: Report any bugs for this project
-title: ':red_circle: [TITLE]'
+title: 'TITLE'
 labels: 'bug'
 assignees: 'ChristophShyper'
 
@@ -9,7 +9,7 @@ assignees: 'ChristophShyper'
 ### Brief description
 <!-- Write here... >>> -->
 
-**Write you description here**
+*Write you description here*
 
 <!-- <<< ...write here -->
 ### Additional information

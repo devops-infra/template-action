@@ -1,7 +1,7 @@
 ---
 name: Feature request
 about: Suggest an idea for this project
-title: ':large_orange_diamond: [TITLE]'
+title: 'TITLE'
 labels: 'enhancement'
 assignees: 'ChristophShyper'
 
@@ -9,7 +9,7 @@ assignees: 'ChristophShyper'
 ### Brief description
 <!-- Write here... >>> -->
 
-**Write you description here**
+*Write you description here*
 
 <!-- <<< ...write here -->
 ### Additional information
