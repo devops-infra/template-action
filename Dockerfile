@@ -17,7 +17,7 @@ LABEL \
   com.github.actions.author="${AUTHOR}" \
   com.github.actions.description="${DESCRIPTION}" \
   com.github.actions.color="purple" \
-  com.github.actions.icon="codepen" \
+  com.github.actions.icon="upload-cloud" \
   org.label-schema.build-date="${BUILD_DATE}" \
   org.label-schema.name="${NAME}" \
   org.label-schema.description="${DESCRIPTION}" \
