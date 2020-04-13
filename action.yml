@@ -14,4 +14,4 @@ runs:
   image: "docker://christophshyper/template-action:latest"
 branding:
   color: "purple"
-  icon: "codepen"
+  icon: "upload-cloud"
