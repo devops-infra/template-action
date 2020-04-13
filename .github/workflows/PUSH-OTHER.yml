@@ -72,7 +72,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_label: "auto,bug"
           pr_body: "{{ steps.pr-template-bug.outputs.content }}"
-          pr_title: ":red_circle: ${{ github.event.commits[0].message }}"
+          pr_title: "${{ github.event.commits[0].message }}"
           pr_assignee: "${{ github.actor }}"
 
       - name: Create pull request - enhancement (conditional)
@@ -82,7 +82,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_label: "auto,enhancement"
           pr_body: "${{ steps.pr-template-enhancement.outputs.content }}"
-          pr_title: ":large_orange_diamond: ${{ github.event.commits[0].message }}"
+          pr_title: "${{ github.event.commits[0].message }}"
           pr_assignee: "${{ github.actor }}"
 
       - name: Create pull request - documentation (conditional)
@@ -92,7 +92,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_label: "auto,documentation"
           pr_body: "${{ steps.pr-template-documentation.outputs.content }}"
-          pr_title: ":large_blue_diamond: ${{ github.event.commits[0].message }}"
+          pr_title: "${{ github.event.commits[0].message }}"
           pr_assignee: "${{ github.actor }}"
 
       - name: Create pull request - other (conditional)
@@ -102,5 +102,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_label: "auto,enhancement"
           pr_body: "${{ steps.pr-template-other.outputs.content }}"
-          pr_title: ":large_orange_diamond: ${{ github.event.commits[0].message }}"
+          pr_title: "${{ github.event.commits[0].message }}"
           pr_assignee: "${{ github.actor }}"
