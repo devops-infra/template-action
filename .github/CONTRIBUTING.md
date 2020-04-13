@@ -5,7 +5,7 @@ Rules for contribution are very simple.
 
 
 ### Branching
-* Big fixes should be pushed to branches starting with `bug/...`.
+* Bug fixes should be pushed to branches starting with `bug/...`.
 * New features should be pushed to branches starting with `enhancement/...`.
 * Updates to documentation should be pushed to branches starting with `documentation/...`.
 * If the changes apply to more than one category any other name best fitting should be used.

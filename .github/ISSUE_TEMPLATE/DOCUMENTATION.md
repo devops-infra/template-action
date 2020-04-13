@@ -13,7 +13,7 @@ assignees: 'ChristophShyper'
 
 <!-- <<< ...write here -->
 ### Additional information
-* [ ] Provided a clear and concise description of what the problem is.
+* [ ] Provided a clear and concise description of what the issue is.
 * [ ] Given a clear and concise description of what is expected.
 * [ ] Added any other context or screenshots about the feature request.
 * [ ] Associated pull request has been already created and link was provided.

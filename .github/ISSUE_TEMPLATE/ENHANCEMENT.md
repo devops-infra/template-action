@@ -13,7 +13,7 @@ assignees: 'ChristophShyper'
 
 <!-- <<< ...write here -->
 ### Additional information
-* [ ] Provided a clear and concise description of what the problem is.
+* [ ] Provided a clear and concise description of what the issue is.
 * [ ] Given a clear and concise description of what is expected.
 * [ ] Proposed a clear and concise description of any alternative solutions or other features.
 * [ ] Added any other context or screenshots about the feature request.
