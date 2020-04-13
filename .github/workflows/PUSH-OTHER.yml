@@ -46,14 +46,14 @@ jobs:
 
       - name: Read the template - enhancement (conditional)
         if: startsWith(github.ref, 'refs/heads/enhancement')
-        id: pr-template-bug
+        id: pr-template-enhancement
         uses: juliangruber/read-file-action@v1
         with:
           path: ./.github/PULL_REQUEST_TEMPLATE/ENHANCEMENT.md
 
       - name: Read the template - documentation (conditional)
         if: startsWith(github.ref, 'refs/heads/documentation')
-        id: pr-template-bug
+        id: pr-template-documentation
         uses: juliangruber/read-file-action@v1
         with:
           path: ./.github/PULL_REQUEST_TEMPLATE/DOCUMENTATION.md
@@ -71,7 +71,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_label: "auto,bug"
-          pr_body: "{{ steps.template.outputs.content }}"
+          pr_body: "{{ steps.pr-template-bug.outputs.content }}"
           pr_title: ":red_circle: ${{ github.event.commits[0].message }}"
           pr_assignee: "${{ github.actor }}"
 
@@ -81,7 +81,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_label: "auto,enhancement"
-          pr_body: "*Automated pull request*\n\n${{ steps.template.outputs.content }}"
+          pr_body: "${{ steps.pr-template-enhancement.outputs.content }}"
           pr_title: ":large_orange_diamond: ${{ github.event.commits[0].message }}"
           pr_assignee: "${{ github.actor }}"
 
@@ -91,7 +91,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_label: "auto,documentation"
-          pr_body: "*Automated pull request*\n\n${{ steps.template.outputs.content }}"
+          pr_body: "${{ steps.pr-template-documentation.outputs.content }}"
           pr_title: ":large_blue_diamond: ${{ github.event.commits[0].message }}"
           pr_assignee: "${{ github.actor }}"
 
@@ -101,6 +101,6 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_label: "auto,enhancement"
-          pr_body: "*Automated pull request*\n\n${{ steps.template.outputs.content }}"
+          pr_body: "${{ steps.pr-template-other.outputs.content }}"
           pr_title: ":large_orange_diamond: ${{ github.event.commits[0].message }}"
           pr_assignee: "${{ github.actor }}"
