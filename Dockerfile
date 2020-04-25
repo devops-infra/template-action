@@ -6,7 +6,7 @@ FROM alpine:3.11
 # And for https://help.github.com/en/actions/building-actions/metadata-syntax-for-github-actions
 ARG NAME="GitHub Action template"
 ARG DESCRIPTION="Template repository for GitHub Actions"
-ARG REPO_URL="https://github.com/ChristophShyper/template-action"
+ARG REPO_URL="https://github.com/devops-infra/template-action"
 ARG AUTHOR="Krzysztof Szyper / ChristophShyper <biotyk@mail.com>"
 ARG HOMEPAGE="https://christophshyper.github.io/"
 ARG BUILD_DATE=2020-04-01T00:00:00Z
