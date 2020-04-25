@@ -6,6 +6,12 @@ Dockerized as [christophshyper/template-action](https://hub.docker.com/repositor
 
 **This is just a template repository.**
 
+Features:
+* Baseline for `Dockerfile`, `entrypoint.sh`, `Makefile`.
+* Templates for Pull Requests and Issues.
+* Actions for a default automation.
+* Includes Code of Conduct, Contributing and Codeowners.
+
 
 ## Badge swag
 [
@@ -13,10 +19,8 @@ Dockerized as [christophshyper/template-action](https://hub.docker.com/repositor
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/christophshyper/template-action?color=brightgreen&label=Code%20size&style=flat-square&logo=github)
 ![GitHub last commit](https://img.shields.io/github/last-commit/christophshyper/template-action?color=brightgreen&label=Last%20commit&style=flat-square&logo=github)
 ](https://github.com/christophshyper/template-action "shields.io")
-[![Push to master](https://img.shields.io/github/workflow/status/christophshyper/template-action/Push%20to%20master?color=brightgreen&label=Master%20branch&logo=github&style=flat-square)
-](https://github.com/ChristophShyper/template-action/actions?query=workflow%3A%22Push+to+master%22)
-[![Push to other](https://img.shields.io/github/workflow/status/christophshyper/template-action/Push%20to%20other?color=brightgreen&label=Pull%20requests&logo=github&style=flat-square)
-](https://github.com/ChristophShyper/template-action/actions?query=workflow%3A%22Push+to+other%22)
+[![Push to master](https://github.com/ChristophShyper/template-action/workflows/Push%20to%20master/badge.svg)](https://github.com/ChristophShyper/template-action/actions?query=workflow%3A%22Push+to+master%22)
+[![Push to other](https://github.com/ChristophShyper/template-action/workflows/Push%20to%20other/badge.svg)](https://github.com/ChristophShyper/template-action/actions?query=workflow%3A%22Push+to+other%22)
 <br>
 [
 ![DockerHub](https://img.shields.io/badge/docker-christophshyper%2Ftemplate--action-blue.svg?style=flat-square&logo=docker)
@@ -33,18 +37,18 @@ Dockerized as [christophshyper/template-action](https://hub.docker.com/repositor
     - name: Run the Action
       uses: ChristophShyper/template-action@master
       env:
-        bar: barfoo
+        bazbar: barfoo
       with:
-        baz: bazbar
+        foobar: bazbar
 ```
 
 Environment Variable | Required |Description
 :--- | :---: | :---
-bar | No | Environment variable for `env: ...`.
+bazbar | No | Environment variable for `env: ...`.
 
 Input Variable | Required | Default |Description
 :--- | :---: | :---: | :---
-baz | No | `bazbar` | Some input variable for `with: ...`.
+foobar | No | `foobar` | Some input variable for `with: ...`.
 
 Outputs | Description
 :--- | :---
@@ -53,7 +57,7 @@ foobar | Output from action.
 
 ## Examples
 
-Run the Action via GitHub.
+Run the Action with defaults.
 ```yaml
 name: Run the Action on each commit
 on:
@@ -63,12 +67,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@master
       - name: Run the Action
         uses: ChristophShyper/template-action@master
 ```
 
-Run the Action via DockerHub.
+Run the Action with set inputs.
 ```yaml
 name: Run the Action on each commit
 on:
@@ -78,9 +82,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repoistory
-        uses: actions/checkout@v2
+        uses: actions/checkout@master
       - name: Run the Action
-        uses: docker://christophshyper/template-action:latest
+        uses: ChristophShyper/template-action@master
         env:
           bar: foo
         with:
