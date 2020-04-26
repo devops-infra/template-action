@@ -1,5 +1,5 @@
 name: GitHub Action template
-author: Krzysztof Szyper <biotyk@mail.com>
+author: Krzysztof Szyper / ChristophShyper <biotyk@mail.com>
 description: Template repository for GitHub Actions
 inputs:
   foobar:
