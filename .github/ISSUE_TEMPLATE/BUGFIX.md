@@ -20,4 +20,5 @@ assignees: 'devops-infra/christophshyper'
 * [ ] Added any other context about the issue that can help to understand it.
 * [ ] Associated pull request has been already created and link was provided.
 
+
 *Check [CONTRIBUTING.md](../blob/master/.github/CONTRIBUTING.md) for more information*
