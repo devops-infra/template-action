@@ -1,6 +1,6 @@
 # GitHub Action template
 
-Template repository for GitHub Actions. 
+**Template repository for GitHub Actions** 
 
 Dockerized as [christophshyper/template-action](https://hub.docker.com/repository/docker/christophshyper/template-action).
 
@@ -17,10 +17,12 @@ Features:
 [![Master branch](https://github.com/devops-infra/template-action/workflows/Master%20branch/badge.svg)](https://github.com/devops-infra/template-action/actions?query=workflow%3A%22Master+branch%22)
 [![Other branches](https://github.com/devops-infra/template-action/workflows/Other%20branches/badge.svg)](https://github.com/devops-infra/template-action/actions?query=workflow%3A%22Other+branches%22)
 <br>
+[
 ![GitHub repo](https://img.shields.io/badge/GitHub-devops--infra%2Ftemplate--action-blueviolet.svg?style=plastic&logo=github)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/devops-infra/template-action?color=blueviolet&label=Code%20size&style=plastic&logo=github)
 ![GitHub last commit](https://img.shields.io/github/last-commit/devops-infra/template-action?color=blueviolet&logo=github&style=plastic&label=Last%20commit)
 ![GitHub license](https://img.shields.io/github/license/devops-infra/template-action?color=blueviolet&logo=github&style=plastic&label=License)
+](https://github.com/devops-infra/template-action "shields.io")
 <br>
 [
 ![DockerHub](https://img.shields.io/badge/DockerHub-christophshyper%2Ftemplate--action-blue.svg?style=plastic&logo=docker)
