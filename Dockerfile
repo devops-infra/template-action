@@ -7,7 +7,7 @@ FROM alpine:3.11
 ARG NAME="GitHub Action template"
 ARG DESCRIPTION="Template repository for GitHub Actions"
 ARG REPO_URL="https://github.com/devops-infra/template-action"
-ARG AUTHOR="Krzysztof Szyper / ChristophShyper <biotyk@mail.com>"
+ARG AUTHOR="Krzysztof Szyper / ChristophShyper / biotyk@mail.com"
 ARG HOMEPAGE="https://christophshyper.github.io/"
 ARG BUILD_DATE=2020-04-01T00:00:00Z
 ARG VCS_REF=abcdef1

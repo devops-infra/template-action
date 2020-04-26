@@ -13,21 +13,20 @@ Features:
 * Includes Code of Conduct, Contributing and Codeowners.
 
 
-## Badge swag
-[
-![GitHub](https://img.shields.io/badge/github-devops--infra%2Ftemplate--action-brightgreen.svg?style=flat-square&logo=github)
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/devops-infra/template-action?color=brightgreen&label=Code%20size&style=flat-square&logo=github)
-![GitHub last commit](https://img.shields.io/github/last-commit/devops-infra/template-action?color=brightgreen&label=Last%20commit&style=flat-square&logo=github)
-](https://github.com/devops-infra/template-action "shields.io")
-[![Push to master](https://github.com/devops-infra/template-action/workflows/Push%20to%20master/badge.svg)](https://github.com/devops-infra/template-action/actions?query=workflow%3A%22Push+to+master%22)
-[![Push to other](https://github.com/devops-infra/template-action/workflows/Push%20to%20other/badge.svg)](https://github.com/devops-infra/template-action/actions?query=workflow%3A%22Push+to+other%22)
+# Badge swag
+[![Master branch](https://github.com/devops-infra/template-action/workflows/Master%20branch/badge.svg)](https://github.com/devops-infra/template-action/actions?query=workflow%3A%22Master+branch%22)
+[![Other branches](https://github.com/devops-infra/template-action/workflows/Other%20branches/badge.svg)](https://github.com/devops-infra/template-action/actions?query=workflow%3A%22Other+branches%22)
+<br>
+![GitHub repo](https://img.shields.io/badge/GitHub-devops--infra%2Ftemplate--action-blueviolet.svg?style=plastic&logo=github)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/devops-infra/template-action?color=blueviolet&label=Code%20size&style=plastic&logo=github)
+![GitHub last commit](https://img.shields.io/github/last-commit/devops-infra/template-action?color=blueviolet&logo=github&style=plastic&label=Last%20commit)
+![GitHub license](https://img.shields.io/github/license/devops-infra/template-action?color=blueviolet&logo=github&style=plastic&label=License)
 <br>
 [
-![DockerHub](https://img.shields.io/badge/docker-christophshyper%2Ftemplate--action-blue.svg?style=flat-square&logo=docker)
-![Dockerfile size](https://img.shields.io/github/size/devops-infra/template-action/Dockerfile?label=Dockerfile%20size&style=flat-square&logo=docker)
-![Image size](https://img.shields.io/docker/image-size/christophshyper/template-action/latest?label=Image%20size&style=flat-square&logo=docker)
-![Docker Pulls](https://img.shields.io/docker/pulls/christophshyper/template-action?color=blue&label=Pulls&logo=docker&style=flat-square)
-![Docker version](https://img.shields.io/docker/v/christophshyper/template-action?color=blue&label=Version&logo=docker&style=flat-square)
+![DockerHub](https://img.shields.io/badge/DockerHub-christophshyper%2Ftemplate--action-blue.svg?style=plastic&logo=docker)
+![Docker version](https://img.shields.io/docker/v/christophshyper/template-action?color=blue&label=Version&logo=docker&style=plastic)
+![Image size](https://img.shields.io/docker/image-size/christophshyper/template-action/latest?label=Image%20size&style=plastic&logo=docker)
+![Docker Pulls](https://img.shields.io/docker/pulls/christophshyper/template-action?color=blue&label=Pulls&logo=docker&style=plastic)
 ](https://hub.docker.com/r/christophshyper/template-action "shields.io")
 
 
@@ -42,13 +41,16 @@ Features:
         foobar: bazbar
 ```
 
-Environment Variable | Required |Description
+
+Environment Variable | Required | Description
 :--- | :---: | :---
 bazbar | No | Environment variable for `env: ...`.
 
-Input Variable | Required | Default |Description
+
+Input Variable | Required | Default | Description
 :--- | :---: | :---: | :---
 foobar | No | `foobar` | Some input variable for `with: ...`.
+
 
 Outputs | Description
 :--- | :---
@@ -67,7 +69,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@master
+        uses: actions/checkout@v2
       - name: Run the Action
         uses: devops-infra/template-action@master
 ```
@@ -82,7 +84,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repoistory
-        uses: actions/checkout@master
+        uses: actions/checkout@v2
       - name: Run the Action
         uses: devops-infra/template-action@master
         env:
