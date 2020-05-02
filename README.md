@@ -2,7 +2,7 @@
 
 **Template repository for GitHub Actions** 
 
-Dockerized as [christophshyper/template-action](https://hub.docker.com/repository/docker/christophshyper/template-action).
+Dockerized as [devopsinfra/template-action](https://hub.docker.com/repository/docker/devopsinfra/template-action).
 
 **This is just a template repository.**
 
@@ -25,11 +25,11 @@ Features:
 ](https://github.com/devops-infra/template-action "shields.io")
 <br>
 [
-![DockerHub](https://img.shields.io/badge/DockerHub-christophshyper%2Ftemplate--action-blue.svg?style=plastic&logo=docker)
-![Docker version](https://img.shields.io/docker/v/christophshyper/template-action?color=blue&label=Version&logo=docker&style=plastic)
-![Image size](https://img.shields.io/docker/image-size/christophshyper/template-action/latest?label=Image%20size&style=plastic&logo=docker)
-![Docker Pulls](https://img.shields.io/docker/pulls/christophshyper/template-action?color=blue&label=Pulls&logo=docker&style=plastic)
-](https://hub.docker.com/r/christophshyper/template-action "shields.io")
+![DockerHub](https://img.shields.io/badge/DockerHub-devopsinfra%2Ftemplate--action-blue.svg?style=plastic&logo=docker)
+![Docker version](https://img.shields.io/docker/v/devopsinfra/template-action?color=blue&label=Version&logo=docker&style=plastic)
+![Image size](https://img.shields.io/docker/image-size/devopsinfra/template-action/latest?label=Image%20size&style=plastic&logo=docker)
+![Docker Pulls](https://img.shields.io/docker/pulls/devopsinfra/template-action?color=blue&label=Pulls&logo=docker&style=plastic)
+](https://hub.docker.com/r/devopsinfra/template-action "shields.io")
 
 
 ## Reference
