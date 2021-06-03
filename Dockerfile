@@ -46,15 +46,14 @@ LABEL \
 COPY entrypoint.sh /
 
 # Install needed packages
-RUN set -eux \
-  && chmod +x /entrypoint.sh \
-  && apk update --no-cache \
-  && apk upgrade --no-cache \
-  && apk add --no-cache bash \
+RUN set -eux ;\
+  chmod +x /entrypoint.sh ;\
+  apk update --no-cache ;\
+  apk add --no-cache bash=5.0.11-r1 ;\
   # Insert here
-  && rm -rf /var/cache/* \
-  && rm -rf /root/.cache/*
+  rm -rf /var/cache/* ;\
+  rm -rf /root/.cache/*
 
 # Finish up
 WORKDIR /github/workspace
-ENTRYPOINT /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
