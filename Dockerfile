@@ -1,5 +1,5 @@
 # Use a clean tiny image to store artifacts in
-FROM alpine:3.11
+FROM alpine:3.14
 
 # Labels for http://label-schema.org/rc1/#build-time-labels
 # And for https://github.com/opencontainers/image-spec/blob/master/annotations.md
@@ -49,7 +49,7 @@ COPY entrypoint.sh /
 RUN set -eux ;\
   chmod +x /entrypoint.sh ;\
   apk update --no-cache ;\
-  apk add --no-cache bash=5.0.11-r1 ;\
+  apk add --no-cache bash~=5.1.4 ;\
   # Insert here
   rm -rf /var/cache/* ;\
   rm -rf /root/.cache/*
