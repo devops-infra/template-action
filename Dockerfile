@@ -49,7 +49,8 @@ COPY entrypoint.sh /
 RUN set -eux ;\
   chmod +x /entrypoint.sh ;\
   apk update --no-cache ;\
-  apk add --no-cache bash~=5.1.4 ;\
+  apk add --no-cache \
+    bash~=5.1.4 ;\
   # Insert here
   rm -rf /var/cache/* ;\
   rm -rf /root/.cache/*
