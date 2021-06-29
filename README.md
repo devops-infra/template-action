@@ -36,7 +36,7 @@ Features:
 
 ```yaml
     - name: Run the Action
-      uses: devops-infra/template-action@master
+      uses: devops-infra/template-action@v0.1
       env:
         bazbar: barfoo
       with:
@@ -73,7 +73,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Run the Action
-        uses: devops-infra/template-action@master
+        uses: devops-infra/template-action@v0.1
 ```
 
 Run the Action with set inputs.
@@ -88,7 +88,7 @@ jobs:
       - name: Checkout repoistory
         uses: actions/checkout@v2
       - name: Run the Action
-        uses: devops-infra/template-action@master
+        uses: devops-infra/template-action@v0.1
         env:
           bar: foo
         with:
