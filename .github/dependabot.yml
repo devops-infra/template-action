@@ -10,15 +10,15 @@ updates:
     labels:
       - automatic
 
-#  # Enable version updates for Docker
-#  - package-ecosystem: docker
-#    directory: "/"
-#    schedule:
-#      interval: daily
-#    assignees:
-#      - ChristophShyper
-#    labels:
-#      - automatic
+  # Enable version updates for Docker
+  - package-ecosystem: docker
+    directory: "/"
+    schedule:
+      interval: daily
+    assignees:
+      - ChristophShyper
+    labels:
+      - automatic
 
 #  # Enable version updates for pip
 #  - package-ecosystem: pip
