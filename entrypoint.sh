@@ -21,7 +21,10 @@ echo "[INFO] Input var BAZ: ${INPUT_FOOBAR}"
 RET_CODE=$?
 
 # Finish
-echo "::set-output name=barfoo::${INPUT_FOOBAR}"
+{
+  echo "foobar=${INPUT_FOOBAR}"
+  echo "barfoo=${INPUT_FOOBAR}"
+} >> "$GITHUB_OUTPUT"
 if [[ ${RET_CODE} != "0" ]]; then
   echo -e "\n[ERROR] Check log for errors."
   exit 1
