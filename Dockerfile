@@ -1,6 +1,11 @@
 # Use a clean tiny image to store artifacts in
 FROM alpine:3.17.0
 
+RUN addgroup --system <group>
+RUN adduser --system <user> --ingroup <group>
+USER <user>:<group>
+
+
 # Labels for http://label-schema.org/rc1/#build-time-labels
 # And for https://github.com/opencontainers/image-spec/blob/master/annotations.md
 # And for https://help.github.com/en/actions/building-actions/metadata-syntax-for-github-actions
