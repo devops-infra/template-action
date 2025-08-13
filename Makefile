@@ -41,10 +41,12 @@ define NL
 endef
 
 # Main actions
+
 .PHONY: help
 help: ## Display help prompt
 	$(info Available options:)
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "$(TXT_YELLOW)%-25s $(TXT_RESET) %s\n", $$1, $$2}'
+
 
 .PHONY: build
 build: ## Build Docker images
@@ -64,6 +66,7 @@ build: ## Build Docker images
 		--tag=$(GITHUB_NAME):$(VERSION_PREFIX)$(VERSION) \
 		--tag=$(GITHUB_NAME):$(VERSION_PREFIX)latest .
 	@echo -e "\n$(TXT_GREEN)Build images: $(TXT_YELLOW)$(DOCKER_NAME):$(VERSION_PREFIX)$(VERSION) $(TXT_GREEN)and $(TXT_YELLOW)$(GITHUB_NAME):$(VERSION_PREFIX)$(VERSION)$(TXT_RESET)"
+
 
 .PHONY: login
 login: ## Log into all registries
