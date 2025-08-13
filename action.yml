@@ -11,7 +11,7 @@ outputs:
     description: Output from action
 runs:
   using: docker
-  image: docker://devopsinfra/template-action:v0.1
+  image: docker://devopsinfra/template-action:latest
 branding:
   color: purple
   icon: upload-cloud
