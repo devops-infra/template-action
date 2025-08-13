@@ -5,7 +5,7 @@
 
 ## 📦 Available on
 - **Docker Hub:** [devopsinfra/template-action:latest](https://hub.docker.com/repository/docker/devopsinfra/template-action)
-- **GitHub Packages:** 
+- **GitHub Packages:** [ghcr.io/devops-infra/template-action:latest](https://github.com/devops-infra/template-action/pkgs/container/template-action)
 
 
 ## ✨ Features
