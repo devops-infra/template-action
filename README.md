@@ -70,15 +70,6 @@
 Run the Action with defaults.
 
 ```yaml
-name: Run the Action on each commit
-on:
-  push
-jobs:
-  template-action:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
       - name: Run the Action
         uses: devops-infra/template-action@v0.1
 ```
