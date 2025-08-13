@@ -1,6 +1,19 @@
 # Use a clean tiny image to store artifacts in
 FROM alpine:3.22.1
 
+# Copy all needed files
+COPY entrypoint.sh /
+
+# Install needed packages
+RUN set -eux ;\
+  chmod +x /entrypoint.sh ;\
+  apk update --no-cache ;\
+  apk add --no-cache \
+    bash~=5.2.37 ;\
+  # Insert here
+  rm -rf /var/cache/* ;\
+  rm -rf /root/.cache/*
+
 # Labels for http://label-schema.org/rc1/#build-time-labels
 # And for https://github.com/opencontainers/image-spec/blob/master/annotations.md
 # And for https://help.github.com/en/actions/building-actions/metadata-syntax-for-github-actions
@@ -11,7 +24,7 @@ ARG AUTHOR="Krzysztof Szyper / ChristophShyper / biotyk@mail.com"
 ARG HOMEPAGE="https://christophshyper.github.io/"
 ARG BUILD_DATE=2020-04-01T00:00:00Z
 ARG VCS_REF=abcdef1
-ARG VERSION=v0.0
+ARG VERSION
 LABEL \
   com.github.actions.name="${NAME}" \
   com.github.actions.author="${AUTHOR}" \
@@ -41,19 +54,6 @@ LABEL \
   org.opencontainers.image.description="${DESCRIPTION}" \
   maintainer="${AUTHOR}" \
   repository="${REPO_URL}"
-
-# Copy all needed files
-COPY entrypoint.sh /
-
-# Install needed packages
-RUN set -eux ;\
-  chmod +x /entrypoint.sh ;\
-  apk update --no-cache ;\
-  apk add --no-cache \
-    bash~=5.2.37 ;\
-  # Insert here
-  rm -rf /var/cache/* ;\
-  rm -rf /root/.cache/*
 
 # Finish up
 WORKDIR /github/workspace
