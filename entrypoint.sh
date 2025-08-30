@@ -1,35 +1,51 @@
 #!/usr/bin/env bash
+set -Eeuo pipefail
 
-set -e
+# Optional debug logging: pass `debug: true` in the action inputs to enable
+[[ "${INPUT_DEBUG:-false}" == "true" ]] && set -x
 
-# Return code
-RET_CODE=0
+#shellcheck disable=SC2317
+info()  { printf "[INFO] %s\n" "$*"; }
+warn()  { printf "[WARN] %s\n" "$*" >&2; }
+error() { printf "[ERROR] %s\n" "$*" >&2; }
 
-echo "Inputs:"
-echo "  foobar: ${INPUT_FOOBAR}"
+trap 'error "Action failed. Check logs above."' ERR
 
-## Require github_token
-#if [[ -z "${INPUT_GITHUB_TOKEN}" ]]; then
-#  # shellcheck disable=SC2016
-#  MESSAGE='Missing input "github_token: ${{ secrets.GITHUB_TOKEN }}".'
-#  echo "[ERROR] ${MESSAGE}"
-#  exit 1
-#fi
+# Inputs
+FOOBAR="${INPUT_FOOBAR:-}"
+GITHUB_TOKEN="${INPUT_GITHUB_TOKEN:-}"
 
-# Run main action
-echo "[INFO] Input var BAZ: ${INPUT_FOOBAR}"
-RET_CODE=$?
-
-# Finish
-{
-  echo "foobar=${INPUT_FOOBAR}"
-  echo "barfoo=${INPUT_FOOBAR}"
-} >> "$GITHUB_OUTPUT"
-if [[ ${RET_CODE} != "0" ]]; then
-  echo -e "\n[ERROR] Check log for errors."
-  exit 1
+info "Inputs:"
+info "  foobar: ${FOOBAR:+<set>}${FOOBAR:-<empty>}"
+if [[ -n "${GITHUB_TOKEN}" ]]; then
+  info "  github_token: <hidden>"
 else
-  # Pass in other cases
-  echo -e "\n[INFO] No errors found."
-  exit 0
+  info "  github_token: <empty>"
 fi
+
+# Require github_token if your action needs it (uncomment to enforce)
+# if [[ -z "${GITHUB_TOKEN}" ]]; then
+#   error "Missing input 'github_token: \${{ secrets.GITHUB_TOKEN }}'."
+#   exit 1
+# fi
+
+# Main action logic (placeholder)
+info "Using input 'foobar' in main action."
+# ... your action logic goes here ...
+
+# Helper to write outputs (works locally and on GitHub runners)
+write_output() {
+  local kv="$1"
+  if [[ -n "${GITHUB_OUTPUT:-}" ]]; then
+    printf "%s\n" "${kv}" >> "${GITHUB_OUTPUT}"
+  else
+    info "[LOCAL] output -> ${kv}"
+  fi
+}
+
+# Set outputs
+write_output "foobar=${FOOBAR}"
+write_output "barfoo=${FOOBAR}"
+
+info "Completed without errors."
+exit 0

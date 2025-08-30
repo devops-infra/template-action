@@ -36,7 +36,7 @@
 
 ```yaml
     - name: Run the Action
-      uses: devops-infra/template-action@v0.1
+      uses: devops-infra/template-action@master
       env:
         bazbar: barfoo
       with:
@@ -48,35 +48,43 @@
 
 | Environment Variable | Required | Description                          |
 |:---------------------|:--------:|:-------------------------------------|
-| bazbar               |    No    | Environment variable for `env: ...`. |
+| `bazbar`             |    No    | Environment variable for `env: ...`. |
 
 
 | Input Variable | Required | Default  | Description                          |
 |:---------------|:--------:|:--------:|:-------------------------------------|
-| foobar         |    No    | `foobar` | Some input variable for `with: ...`. |
+| `foobar`       |    No    | `foobar` | Some input variable for `with: ...`. |
 
 
 ### 📤 Output Parameters
 
-| Outputs | Description         |
-|:--------|:--------------------|
-| foobar  | Output from action. |
+| Output Variable | Description         |
+|:----------------|:--------------------|
+| `foofoo`        | Output from action. |
 
 
 ## 💻 Usage Examples
 
 ### 📝 Basic Example
-
 Run the Action with defaults.
 
 ```yaml
+name: Run the Action on each commit
+on:
+  push
+jobs:
+  template-action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
       - name: Run the Action
-        uses: devops-infra/template-action@v0.1
+        uses: devops-infra/template-action@master
 ```
 
 
 ### 🔀 Advanced Example
-
 Run the Action with set inputs.
 
 ```yaml
@@ -89,8 +97,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+
       - name: Run the Action
-        uses: devops-infra/template-action@v0.1
+        uses: devops-infra/template-action@master
         env:
           bar: foo
         with:
@@ -99,15 +108,11 @@ jobs:
 
 
 ## 🏷️ Version Tags: vX, vX.Y, vX.Y.Z
-
 This action supports three tag levels for flexible versioning:
-
 - **`vX`**: Always points to the latest patch of a major version (e.g., `v1` → `v1.2.3`).  
   _Benefit: Get all latest fixes for a major version automatically._
-
 - **`vX.Y`**: Always points to the latest patch of a minor version (e.g., `v1.2` → `v1.2.3`).  
   _Benefit: Stay on a minor version, always up-to-date with bugfixes._
-
 - **`vX.Y.Z`**: Fixed to a specific release (e.g., `v1.2.3`).  
   _Benefit: Full reproducibility—never changes._
 
@@ -115,17 +120,14 @@ This action supports three tag levels for flexible versioning:
 
 
 ## 🤝 Contributing
-
 Contributions are welcome! Please feel free to submit a Pull Request. Refer to the [CONTRIBUTING](https://github.com/devops-infra/.github/blob/master/CONTRIBUTING.md) for guidelines.
 
 
 ## 📄 License
-
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 
 ## 💬 Support
-
 If you have any questions or need help, please:
 - 📝 Create an [issue](https://github.com/devops-infra/template-action/issues)
 - 🌟 Star this repository if you find it useful!
