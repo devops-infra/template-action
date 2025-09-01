@@ -4,11 +4,12 @@ on:
   push:
     branches-ignore:
       - master
-      - 'dependabot**'
+      - dependabot/**
 
 permissions:
   contents: read
   packages: write
+  pull-requests: write
 
 jobs:
   lint:
@@ -17,11 +18,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
-
-      - name: Install Task
-        uses: arduino/setup-task@v2.0.0
         with:
-          version: 3.x
+          fetch-depth: 0
+          fetch-tags: true
 
       - name: Install Task
         uses: arduino/setup-task@v2.0.0
@@ -31,30 +30,47 @@ jobs:
       - name: Run linters
         run: task lint
 
-  build-and-push:
-    name: Build & Push test
-    runs-on: ubuntu-latest
+  self-test:
+    name: Self-test Action
+    runs-on: ubuntu-24.04-arm
+    needs: [lint]
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Run action from source
+        id: run
+        shell: bash
+        env:
+          INPUT_FOOBAR: hello
+          INPUT_DEBUG: 'false'
+        run: |
+          chmod +x ./entrypoint.sh
+          ./entrypoint.sh
+
+      - name: Verify outputs
+        run: |
+          test "${{ steps.run.outputs.foobar }}" = "hello"
+          test "${{ steps.run.outputs.barfoo }}" = "hello"
+
+  build-and-push:
+    name: Build & Push test
+    runs-on: ubuntu-24.04-arm
+    needs: [self-test]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          fetch-tags: true
 
       - name: Install Task
         uses: arduino/setup-task@v2.0.0
         with:
           version: 3.x
-
-      - name: Extract branch name
-        id: branch
-        run: |
-          if [ "${{ github.event_name }}" == "pull_request" ]; then
-            BRANCH_NAME="${{ github.head_ref }}"
-          else
-            BRANCH_NAME="${GITHUB_REF#refs/heads/}"
-          fi
-          # Sanitize branch name for Docker tag (replace special chars with -)
-          SANITIZED_BRANCH=$(echo "$BRANCH_NAME" | sed 's/[^a-zA-Z0-9._-]/-/g' | tr '[:upper:]' '[:lower:]')
-          echo "name=$SANITIZED_BRANCH" >> $GITHUB_OUTPUT
-          echo "Branch name: $BRANCH_NAME -> Docker tag: test-$SANITIZED_BRANCH"
 
       - name: Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -69,42 +85,19 @@ jobs:
 
       - name: Build and push test image
         env:
-          DOCKER_BUILDKIT: 1
           DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VERSION: ${{ steps.branch.outputs.name }}
-          VERSION_PREFIX: test-
-          TERM: xterm-256color
         run: task docker:push
-
-  self-test:
-    name: Self-test Action
-    runs-on: ubuntu-latest
-    needs: [lint]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-
-      - name: Run action from source
-        id: run
-        uses: './'
-        with:
-          foobar: hello
-          debug: 'false'
-
-      - name: Verify outputs
-        run: |
-          test "${{ steps.run.outputs.foobar }}" = "hello"
-          test "${{ steps.run.outputs.barfoo }}" = "hello"
 
   pull-request:
     name: Pull Request
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     steps:
       - name: Checkout
         uses: actions/checkout@v5
         with:
           fetch-depth: 0
+          fetch-tags: true
 
       - name: Template
         shell: bash

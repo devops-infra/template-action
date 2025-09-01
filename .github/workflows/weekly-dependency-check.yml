@@ -3,8 +3,7 @@ name: Weekly Dependency Check
 on:
   schedule:
     # Run every Monday at 08:00 UTC
-    - cron: '0 8 * * 1'
-  workflow_dispatch:
+    - cron: 0 8 * * 1
 
 permissions:
   contents: read
@@ -27,18 +26,6 @@ jobs:
         with:
           version: 3.x
 
-      - name: Get latest release tag
-        id: latest-tag
-        run: |
-          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null)
-          if [ -z "$LATEST_TAG" ]; then
-            echo "No release tags found in repository" >&2
-            echo "Please create at least one release before running dependency checks" >&2
-            exit 1
-          fi
-          echo "tag=$LATEST_TAG" >> $GITHUB_OUTPUT
-          echo "Testing dependencies for tag: $LATEST_TAG"
-
       - name: Docker Buildx
         uses: docker/setup-buildx-action@v3
         with:
@@ -52,10 +39,6 @@ jobs:
 
       - name: Build & push test image
         env:
-          DOCKER_BUILDKIT: 1
           DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VERSION: ${{ steps.latest-tag.outputs.tag }}
-          VERSION_PREFIX: test-
-          TERM: xterm-256color
         run: task docker:push

@@ -4,12 +4,11 @@ set -Eeuo pipefail
 # Optional debug logging: pass `debug: true` in the action inputs to enable
 [[ "${INPUT_DEBUG:-false}" == "true" ]] && set -x
 
-#shellcheck disable=SC2317
-info()  { printf "[INFO] %s\n" "$*"; }
+info()  { printf "[INFO] ℹ️ %s\n" "$*"; }
 #shellcheck disable=SC2329
-warn()  { printf "[WARN] %s\n" "$*" >&2; }
+warn()  { printf "[WARN] ⚠️ %s\n" "$*" >&2; }
 #shellcheck disable=SC2329
-error() { printf "[ERROR] %s\n" "$*" >&2; }
+error() { printf "[ERROR] ❌ %s\n" "$*" >&2; }
 
 trap 'error "Action failed. Check logs above."' ERR
 

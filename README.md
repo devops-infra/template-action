@@ -1,6 +1,6 @@
 # 🚀 GitHub Action template
 
-**Template repository for GitHub Actions** 
+**Template repository for GitHub Actions**
 
 
 ## 📦 Available on
@@ -10,11 +10,7 @@
 
 ## ✨ Features
 
-* Clean Docker-based Action with hardened bash entrypoint.
-* Taskfile-driven developer workflow (lint, build, push).
-* CI: actionlint, shellcheck, yamllint, hadolint, multi-arch buildx.
-* Automated releases: manual (workflow_dispatch) and on git tags.
-* Templates for PR and Issues; CODEOWNERS, Dependabot, EditorConfig, pre-commit.
+* Baseline for GitHub Actions for [Devops-Infra](https://shyper.pro/portfolio/projects/actions/) projects
 
 
 ## 📊 Badges
@@ -37,7 +33,7 @@
 
 ```yaml
     - name: Run the Action
-      uses: devops-infra/template-action@v1
+      uses: devops-infra/template-action@v0
       with:
         foobar: bazbar
         debug: 'false'
@@ -45,16 +41,16 @@
 ```
 
 
-### 🔧 Inputs
+### 🔧 Input Paremeters
 
 | Input          | Required | Default  | Description                         |
 |:---------------|:--------:|:--------:|:------------------------------------|
 | `foobar`       |    No    | `foobar` | Sample input used by the action.    |
 | `debug`        |    No    | `false`  | Enable verbose debug logging.       |
-| `github_token` |    No    | —        | For authenticated GitHub requests.  |
+| `github_token` |    No    |          | For authenticated GitHub requests.  |
 
 
-### 📤 Outputs
+### 📤 Outputs Parameters
 
 | Output   | Description                          |
 |:---------|:-------------------------------------|
@@ -75,7 +71,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: devops-infra/template-action@v1
+      - uses: devops-infra/template-action@v0
 ```
 
 ### 🔀 Advanced
@@ -89,26 +85,41 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: devops-infra/template-action@v1
+      - uses: devops-infra/template-action@v0
         with:
           foobar: hello
           debug: 'true'
+```
+
+### 🎯 Use specific version
+Run the Action with a specific version tag.
+```yaml
+name: Run the Action on each commit
+on: [push]
+jobs:
+  template-action:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: devops-infra/template-action@v0.1.2
 ```
 
 
 ## 🏗️ CI/CD
 
 Workflows included:
-- Pull Request: full lint (hadolint, shellcheck, actionlint, yamllint), test build and push to temporary tags, and a self-test running this action from source.
-- CI (master): lint and build/push an `edge` image to Docker Hub and GHCR.
-- Release (manual): creates vX.Y.Z and updates vX, vX.Y tags, builds and pushes multi-arch images, and publishes a GitHub Release.
-- Publish on tag: push images automatically when a `v*` tag is pushed.
-- Weekly: refreshes test build against the latest release tag.
+- Pull Request: lint (hadolint, shellcheck, actionlint, yamllint), build and push a test image (test-<branch>), and a self-test running this action from source.
+- Release (manual): updates action.yml (pins exact vX.Y.Z) and docs (major vX), creates vX.Y.Z and updates vX, vX.Y tags, builds and pushes multi-arch images, and publishes a GitHub Release.
+- Weekly: builds and pushes a test image from the latest release tag (test-<tag>) to keep registries active and catch dependency issues.
 
 
 ## 🧑‍💻 Development
 
-Prereqs: Docker + Buildx, Task (installed via workflow or from https://taskfile.dev), optional pre-commit.
+Prerequisites:
+- Docker with Buildx,
+- Task (installed via workflow or from https://taskfile.dev),
+- gnu-sed if on macOS (brew install gnu-sed),
+- pre-commit (optional).
 
 Common tasks:
 
@@ -141,7 +152,7 @@ This action supports three tag levels for flexible versioning:
 
 ## 🤝 Contributing
 Contributions are welcome! See [CONTRIBUTING](https://github.com/devops-infra/.github/blob/master/CONTRIBUTING.md).
-
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 📄 License
 MIT — see [LICENSE](LICENSE).
