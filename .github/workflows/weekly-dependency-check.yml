@@ -4,6 +4,11 @@ on:
   schedule:
     # Run every Monday at 08:00 UTC
     - cron: '0 8 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
 
 jobs:
   dependency-check:
@@ -12,6 +17,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
 
       - name: Install Task
         uses: arduino/setup-task@v2.0.0
@@ -23,8 +32,8 @@ jobs:
         run: |
           LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null)
           if [ -z "$LATEST_TAG" ]; then
-            echo "❌ No release tags found in repository"
-            echo "Please create at least one release before running dependency checks"
+            echo "No release tags found in repository" >&2
+            echo "Please create at least one release before running dependency checks" >&2
             exit 1
           fi
           echo "tag=$LATEST_TAG" >> $GITHUB_OUTPUT
@@ -49,4 +58,4 @@ jobs:
           VERSION: ${{ steps.latest-tag.outputs.tag }}
           VERSION_PREFIX: test-
           TERM: xterm-256color
-        run: make push
+        run: task docker:push

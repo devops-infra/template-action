@@ -6,9 +6,18 @@ inputs:
     description: Some input variable
     required: false
     default: foobar
+  debug:
+    description: Enable verbose debug logging
+    required: false
+    default: 'false'
+  github_token:
+    description: GitHub token for authenticated calls
+    required: false
 outputs:
   barfoo:
     description: Output from action
+  foobar:
+    description: Echo of input 'foobar'
 runs:
   using: docker
   image: docker://devopsinfra/template-action:latest

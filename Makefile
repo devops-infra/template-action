@@ -90,3 +90,5 @@ push: login ## Push Docker images
 		--tag=$(GITHUB_NAME):$(VERSION_PREFIX)$(VERSION) \
 		--tag=$(GITHUB_NAME):$(VERSION_PREFIX)latest .
 	@echo -e "\n$(TXT_GREEN)Pushed images: $(TXT_YELLOW)$(DOCKER_NAME):$(VERSION_PREFIX)$(VERSION) $(TXT_GREEN)and $(TXT_YELLOW)$(GITHUB_NAME):$(VERSION_PREFIX)$(VERSION)$(TXT_RESET)"
+
+

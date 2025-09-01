@@ -6,7 +6,9 @@ set -Eeuo pipefail
 
 #shellcheck disable=SC2317
 info()  { printf "[INFO] %s\n" "$*"; }
+#shellcheck disable=SC2329
 warn()  { printf "[WARN] %s\n" "$*" >&2; }
+#shellcheck disable=SC2329
 error() { printf "[ERROR] %s\n" "$*" >&2; }
 
 trap 'error "Action failed. Check logs above."' ERR

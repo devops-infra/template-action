@@ -1,0 +1,100 @@
+version: '3'
+
+vars:
+  DOCKER_USERNAME: { sh: 'echo ${DOCKER_USERNAME:-christophshyper}' }
+  DOCKER_ORG_NAME: { sh: 'echo ${DOCKER_ORG_NAME:-devopsinfra}' }
+  DOCKER_IMAGE: { sh: 'echo ${DOCKER_IMAGE:-template-action}' }
+  DOCKER_NAME: '{{.DOCKER_ORG_NAME}}/{{.DOCKER_IMAGE}}'
+  GITHUB_USERNAME: { sh: 'echo ${GITHUB_USERNAME:-ChristophShyper}' }
+  GITHUB_ORG_NAME: { sh: 'echo ${GITHUB_ORG_NAME:-devops-infra}' }
+  GITHUB_NAME: 'ghcr.io/{{.GITHUB_ORG_NAME}}/{{.DOCKER_IMAGE}}'
+  GIT_SHA: { sh: 'echo ${GITHUB_SHA:-$(git rev-parse HEAD 2>/dev/null || echo aabbccddeeff)}' }
+  SHORT_SHA: { sh: 'echo {{.GIT_SHA}} | cut -c1-7' }
+  VERSION: { sh: 'echo ${VERSION:-$(git describe --tags --abbrev=0 2>/dev/null || echo 0.0.0)}' }
+  VERSION_PREFIX: { sh: 'echo ${VERSION_PREFIX:-}' }
+  BUILD_DATE: { sh: 'date -u +"%Y-%m-%dT%H:%M:%SZ"' }
+  TAG_LATEST: { sh: 'echo ${TAG_LATEST:-true}' }
+
+silent: true
+
+tasks:
+  default:
+    desc: List tasks
+    cmds:
+      - task --list
+
+  lint:
+    desc: Run all linters (Dockerfile, shell scripts, workflows, YAML)
+    cmds:
+      - task: lint:dockerfile
+      - task: lint:shell
+      - task: lint:actionlint
+      - task: lint:yamllint
+
+  lint:dockerfile:
+    desc: Lint Dockerfile with hadolint
+    cmds:
+      - docker run --rm -i -v "$PWD:/work" -w /work hadolint/hadolint:latest-debian hadolint Dockerfile
+
+  lint:shell:
+    desc: Lint shell scripts with shellcheck
+    cmds:
+      - docker run --rm -i -v "$PWD:/work" -w /work koalaman/shellcheck:stable shellcheck -x -S style entrypoint.sh
+
+  lint:actionlint:
+    desc: Lint GitHub Actions workflows with actionlint
+    cmds:
+      - docker run --rm -i -v "$PWD:/work" -w /work ghcr.io/rhysd/actionlint:latest -color
+
+  lint:yamllint:
+    desc: Lint YAML files with yamllint
+    cmds:
+      - docker run --rm -i -v "$PWD:/work" -w /work cytopia/yamllint -c .yamllint.yml .
+
+  docker:login:
+    desc: Login to Docker Hub and GHCR
+    env:
+      DOCKER_USERNAME: '{{.DOCKER_USERNAME}}'
+      GITHUB_USERNAME: '{{.GITHUB_USERNAME}}'
+    cmds:
+      - |
+        echo "Logging into Docker Hub as {{.DOCKER_USERNAME}}"
+        echo "${DOCKER_TOKEN}" | docker login -u "{{.DOCKER_USERNAME}}" --password-stdin
+      - |
+        echo "Logging into GHCR as {{.GITHUB_USERNAME}}"
+        echo "${GITHUB_TOKEN}" | docker login ghcr.io -u "{{.GITHUB_USERNAME}}" --password-stdin
+
+  docker:build:
+    desc: Build Docker image (multi-arch if buildx available)
+    env:
+      DOCKER_BUILDKIT: '1'
+    cmds:
+      - >-
+        TAGS=""; if [ "{{.TAG_LATEST}}" = "true" ]; then TAGS="-t {{.DOCKER_NAME}}:{{.VERSION_PREFIX}}latest -t {{.GITHUB_NAME}}:{{.VERSION_PREFIX}}latest"; fi;
+        docker buildx build --platform linux/amd64,linux/arm64
+        --build-arg BUILD_DATE={{.BUILD_DATE}}
+        --build-arg VCS_REF={{.SHORT_SHA}}
+        --build-arg VERSION={{.VERSION}}
+        -f Dockerfile
+        -t {{.DOCKER_NAME}}:{{.VERSION_PREFIX}}{{.VERSION}}
+        -t {{.GITHUB_NAME}}:{{.VERSION_PREFIX}}{{.VERSION}}
+        $TAGS
+        .
+
+  docker:push:
+    desc: Build and push Docker images (multi-arch)
+    deps: [docker:login]
+    env:
+      DOCKER_BUILDKIT: '1'
+    cmds:
+      - >-
+        TAGS=""; if [ "{{.TAG_LATEST}}" = "true" ]; then TAGS="-t {{.DOCKER_NAME}}:{{.VERSION_PREFIX}}latest -t {{.GITHUB_NAME}}:{{.VERSION_PREFIX}}latest"; fi;
+        docker buildx build --platform linux/amd64,linux/arm64 --push
+        --build-arg BUILD_DATE={{.BUILD_DATE}}
+        --build-arg VCS_REF={{.SHORT_SHA}}
+        --build-arg VERSION={{.VERSION}}
+        -f Dockerfile
+        -t {{.DOCKER_NAME}}:{{.VERSION_PREFIX}}{{.VERSION}}
+        -t {{.GITHUB_NAME}}:{{.VERSION_PREFIX}}{{.VERSION}}
+        $TAGS
+        .

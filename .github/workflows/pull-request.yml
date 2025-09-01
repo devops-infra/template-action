@@ -6,6 +6,10 @@ on:
       - master
       - 'dependabot**'
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   lint:
     name: Lint
@@ -14,14 +18,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Hadolint
-        uses: hadolint/hadolint-action@v3.1.0
+      - name: Install Task
+        uses: arduino/setup-task@v2.0.0
         with:
-          dockerfile: Dockerfile
+          version: 3.x
+
+      - name: Install Task
+        uses: arduino/setup-task@v2.0.0
+        with:
+          version: 3.x
+
+      - name: Run linters
+        run: task lint
 
   build-and-push:
     name: Build & Push test
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -63,11 +75,31 @@ jobs:
           VERSION: ${{ steps.branch.outputs.name }}
           VERSION_PREFIX: test-
           TERM: xterm-256color
-        run: make push
+        run: task docker:push
+
+  self-test:
+    name: Self-test Action
+    runs-on: ubuntu-latest
+    needs: [lint]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Run action from source
+        id: run
+        uses: './'
+        with:
+          foobar: hello
+          debug: 'false'
+
+      - name: Verify outputs
+        run: |
+          test "${{ steps.run.outputs.foobar }}" = "hello"
+          test "${{ steps.run.outputs.barfoo }}" = "hello"
 
   pull-request:
     name: Pull Request
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v5
