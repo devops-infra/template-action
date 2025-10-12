@@ -34,11 +34,19 @@
 ```yaml
     - name: Run the Action
       uses: devops-infra/template-action@v0
+      env:
+        barfoo: foobaz
       with:
         foobar: bazbar
         debug: 'false'
         # github_token: ${{ secrets.GITHUB_TOKEN }}
 ```
+
+### 🔨 Input Variables
+
+| Variable | Description                  |
+|:---------|:-----------------------------|
+| `barfoo` | Sample environment variable. |
 
 
 ### 🔧 Input Paremeters

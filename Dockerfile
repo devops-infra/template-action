@@ -10,7 +10,6 @@ RUN set -eux ;\
   apk update --no-cache ;\
   apk add --no-cache \
     bash~=5.2.37 ;\
-  # bash~=5.2.37 ;\
   # OTHER BINARIES TO INSTALL HERE \
   rm -rf /var/cache/* ;\
   rm -rf /root/.cache/*
