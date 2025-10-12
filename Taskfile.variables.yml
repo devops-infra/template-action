@@ -78,8 +78,7 @@ vars:
   VERSION_FULL: v{{.MAJOR}}.{{.MINOR}}.{{.PATCH}}
 
   # Git metadata
-  DEFAULT_BRANCH:
-    sh: git symbolic-ref refs/remotes/origin/HEAD | {{.SED}} 's@^refs/remotes/origin/@@'
+  DEFAULT_BRANCH: master
   GIT_SHA:
     sh: git rev-parse HEAD 2>/dev/null || echo 0000000000000000000000000000000000000000
   GIT_SHORT_SHA:
