@@ -55,7 +55,13 @@ vars:
     sh: echo "{{.LAST_RELEASE}}" | awk -F\. '{print $1}'
   LAST_MINOR:
     sh: echo "{{.LAST_RELEASE}}" | awk -F\. '{print $1"."$2}'
-  VERSION_SUFFIX: '{{.VERSION_SUFFIX | default "-test"}}'
+  VERSION_SUFFIX:
+    sh: |
+      if [ "${VERSION_SUFFIX+x}" = "x" ]; then
+        printf "%s" "${VERSION_SUFFIX}"
+      else
+        printf "%s" "-test"
+      fi
   VERSION:
     sh: |
       if [ -n "${VERSION:-}" ]; then
