@@ -1,5 +1,5 @@
 # Use a clean tiny image to store artifacts in
-FROM alpine:3.22.1
+FROM alpine:3.22.2
 
 # Copy all needed files
 COPY entrypoint.sh /
