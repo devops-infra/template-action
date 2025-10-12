@@ -82,6 +82,12 @@ vars:
   VERSION_MAJOR: v{{.MAJOR}}
   VERSION_MINOR: v{{.MAJOR}}.{{.MINOR}}
   VERSION_FULL: v{{.MAJOR}}.{{.MINOR}}.{{.PATCH}}
+  NEXT_PATCH:
+    sh: echo $(( {{.PATCH}} + 1 ))
+  NEXT_MINOR:
+    sh: echo $(( {{.MINOR}} + 1 ))
+  NEXT_MAJOR:
+    sh: echo $(( {{.MAJOR}} + 1 ))
 
   # Git metadata
   DEFAULT_BRANCH: master

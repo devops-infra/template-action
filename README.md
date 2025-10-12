@@ -111,7 +111,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - uses: devops-infra/template-action@v1.0.0
+      - uses: devops-infra/template-action@v1.0.1
         id: Pin patch version
 
       - uses: devops-infra/template-action@v1.0

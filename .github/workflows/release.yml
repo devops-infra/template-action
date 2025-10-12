@@ -36,12 +36,12 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           task version:tag-release
 
-      - name: Docker Buildx
+      - name: Install Docker Buildx
         uses: docker/setup-buildx-action@v3
         with:
           install: true
 
-      - name: QEMU
+      - name: Install QEMU
         uses: docker/setup-qemu-action@v3
         with:
           image: tonistiigi/binfmt:latest
@@ -65,3 +65,11 @@ jobs:
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update Docker Hub description
+        uses: peter-evans/dockerhub-description@v5
+        with:
+          username: ${{ vars.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+          repository: ${{ vars.DOCKER_ORG_NAME }}/${{ github.event.repository.name }}
+          short-description: ${{ github.event.repository.description }}
