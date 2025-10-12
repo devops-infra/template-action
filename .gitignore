@@ -4,3 +4,5 @@
 
 # Custom
 .tmp/
+.venv
+.envrc

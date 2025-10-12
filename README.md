@@ -1,6 +1,6 @@
 # 🚀 GitHub Action template
 
-**Template repository for GitHub Actions** 
+**Template repository for GitHub Actions**
 
 
 ## 📦 Available on
@@ -10,13 +10,10 @@
 
 ## ✨ Features
 
-* Baseline for `Dockerfile`, `entrypoint.sh`, `Makefile`.
-* Templates for Pull Requests and Issues.
-* Actions for a default automation.
-* Includes Code of Conduct, Contributing and Codeowners.
+* Baseline for GitHub Actions for [Devops-Infra](https://shyper.pro/portfolio/projects/actions/) projects
 
 
-## 📊 Badge Swag
+## 📊 Badges
 [
 ![GitHub repo](https://img.shields.io/badge/GitHub-devops--infra%2Ftemplate--action-blueviolet.svg?style=plastic&logo=github)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/devops-infra/template-action?color=blueviolet&label=Code%20size&style=plastic&logo=github)
@@ -36,96 +33,140 @@
 
 ```yaml
     - name: Run the Action
-      uses: devops-infra/template-action@v0.1
+      uses: devops-infra/template-action@v0
       env:
-        bazbar: barfoo
+        barfoo: foobaz
       with:
         foobar: bazbar
+        debug: 'false'
+        # github_token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
+### 🔨 Input Variables
 
-### 🔧 Input Parameters
-
-| Environment Variable | Required | Description                          |
-|:---------------------|:--------:|:-------------------------------------|
-| bazbar               |    No    | Environment variable for `env: ...`. |
-
-
-| Input Variable | Required | Default  | Description                          |
-|:---------------|:--------:|:--------:|:-------------------------------------|
-| foobar         |    No    | `foobar` | Some input variable for `with: ...`. |
+| Variable | Description                  |
+|:---------|:-----------------------------|
+| `barfoo` | Sample environment variable. |
 
 
-### 📤 Output Parameters
+### 🔧 Input Paremeters
 
-| Outputs | Description         |
-|:--------|:--------------------|
-| foobar  | Output from action. |
+| Input          | Required | Default  | Description                         |
+|:---------------|:--------:|:--------:|:------------------------------------|
+| `foobar`       |    No    | `foobar` | Sample input used by the action.    |
+| `debug`        |    No    | `false`  | Enable verbose debug logging.       |
+| `github_token` |    No    |          | For authenticated GitHub requests.  |
+
+
+### 📤 Outputs Parameters
+
+| Output   | Description                          |
+|:---------|:-------------------------------------|
+| `foobar` | Echo of provided `foobar` input.     |
+| `barfoo` | Duplicate of `foobar` for demo use.  |
 
 
 ## 💻 Usage Examples
 
-### 📝 Basic Example
-
+### 📝 Basic
 Run the Action with defaults.
 
 ```yaml
-      - name: Run the Action
-        uses: devops-infra/template-action@v0.1
-```
-
-
-### 🔀 Advanced Example
-
-Run the Action with set inputs.
-
-```yaml
 name: Run the Action on each commit
-on:
-  push
+on: [push]
 jobs:
   template-action:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
-      - name: Run the Action
-        uses: devops-infra/template-action@v0.1
-        env:
-          bar: foo
+      - uses: actions/checkout@v5
+      - uses: devops-infra/template-action@v0
+```
+
+### 🔀 Advanced
+Run the Action with set inputs.
+
+```yaml
+name: Run the Action on each commit
+on: [push]
+jobs:
+  template-action:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: devops-infra/template-action@v0
         with:
-          bar: baz
+          foobar: hello
+          debug: 'true'
+```
+
+### 🎯 Use specific version
+Run the Action with a specific version tag.
+```yaml
+name: Run the Action on each commit
+on: [push]
+jobs:
+  template-action:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: devops-infra/template-action@v0.1.2
+```
+
+
+## 🏗️ CI/CD
+
+Workflows included:
+- Pull Request: lint (hadolint, shellcheck, actionlint, yamllint), build and push a test image (test-<branch>), and a self-test running this action from source.
+- Release (manual): updates action.yml (pins exact vX.Y.Z) and docs (major vX), creates vX.Y.Z and updates vX, vX.Y tags, builds and pushes multi-arch images, and publishes a GitHub Release.
+- Weekly: builds and pushes a test image from the latest release tag (test-<tag>) to keep registries active and catch dependency issues.
+
+
+## 🧑‍💻 Development
+
+Prerequisites:
+- Docker with Buildx,
+- Task (installed via workflow or from https://taskfile.dev),
+- gnu-sed if on macOS (brew install gnu-sed),
+- pre-commit (optional).
+
+Common tasks:
+
+```bash
+# Run all linters
+task lint
+
+# Build multi-arch images locally (no push)
+task docker:build
+
+# Push images (requires DOCKER_TOKEN and GITHUB_TOKEN)
+DOCKER_TOKEN=... GITHUB_TOKEN=... task docker:push
+```
+
+Pre-commit hooks:
+
+```bash
+pipx install pre-commit  # or pip install --user pre-commit
+pre-commit install
+pre-commit run --all-files
 ```
 
 
 ## 🏷️ Version Tags: vX, vX.Y, vX.Y.Z
-
 This action supports three tag levels for flexible versioning:
-
-- **`vX`**: Always points to the latest patch of a major version (e.g., `v1` → `v1.2.3`).  
-  _Benefit: Get all latest fixes for a major version automatically._
-
-- **`vX.Y`**: Always points to the latest patch of a minor version (e.g., `v1.2` → `v1.2.3`).  
-  _Benefit: Stay on a minor version, always up-to-date with bugfixes._
-
-- **`vX.Y.Z`**: Fixed to a specific release (e.g., `v1.2.3`).  
-  _Benefit: Full reproducibility—never changes._
-
-**Use the tag depth that matches your stability needs.**
+- `vX`: latest patch of the major version (e.g., `v1`).
+- `vX.Y`: latest patch of the minor version (e.g., `v1.2`).
+- `vX.Y.Z`: fixed to a specific release.
 
 
 ## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request. Refer to the [CONTRIBUTING](https://github.com/devops-infra/.github/blob/master/CONTRIBUTING.md) for guidelines.
-
+Contributions are welcome! See [CONTRIBUTING](https://github.com/devops-infra/.github/blob/master/CONTRIBUTING.md).
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT — see [LICENSE](LICENSE).
 
 
 ## 💬 Support
-
 If you have any questions or need help, please:
-- 📝 Create an [issue](https://github.com/devops-infra/template-action/issues)
-- 🌟 Star this repository if you find it useful!
+- Create an [issue](https://github.com/devops-infra/template-action/issues)
+- Star this repository if you find it useful!

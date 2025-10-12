@@ -1,0 +1,75 @@
+version: '3'
+
+silent: true
+
+tasks:
+  version:tag-release:
+    internal: true
+    desc: Create full version tag if missing; create/update minor and major tags
+    cmds:
+      - |
+        set -eu
+        if (set -o | grep -q pipefail) 2>/dev/null; then set -o pipefail; fi
+
+        REMOTE='origin'
+        FULL='{{.VERSION_FULL}}'
+        MINOR='{{.VERSION_MINOR}}'
+        MAJOR='{{.VERSION_MAJOR}}'
+
+        # Validate vX.Y.Z
+        if ! printf "%s" "$FULL" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+$'; then
+          echo "❌ ERROR: VERSION '$FULL' must match vX.Y.Z" >&2
+          exit 1
+        fi
+
+        tag_sha() { git rev-parse "refs/tags/$1" 2>/dev/null || true; }
+        remote_tag_sha() { git ls-remote --tags "$REMOTE" "refs/tags/$1" 2>/dev/null | awk '{print $1}' || true; }
+
+        echo "ℹ️ INFO: Tags - Full: $FULL | Minor: $MINOR | Major: $MAJOR"
+
+        # Full tag: create and push only if absent on remote
+        full_remote_sha="$(remote_tag_sha "$FULL")"
+        if [ -z "$full_remote_sha" ]; then
+          if git rev-parse -q --verify "refs/tags/$FULL" >/dev/null 2>&1; then
+            echo "ℹ️ INFO: Full tag '$FULL' exists locally but not on remote; pushing"
+          else
+            echo "ℹ️ INFO: Creating full tag '$FULL'"
+            git tag -a "$FULL" -m "$FULL"
+          fi
+          git push "$REMOTE" "refs/tags/$FULL"
+          echo "✅ OK: Pushed full tag '$FULL'"
+        else
+          echo "ℹ️ INFO: Full tag '$FULL' already exists on remote; skipping"
+        fi
+
+        # Minor tag: create or update
+        git tag -f -a "$MINOR" -m "$FULL"
+        minor_local_sha="$(tag_sha "$MINOR")"
+        minor_remote_sha="$(remote_tag_sha "$MINOR")"
+        if [ -z "$minor_remote_sha" ]; then
+          git push "$REMOTE" "refs/tags/$MINOR"
+          echo "✅ OK: Created and pushed minor tag '$MINOR' -> $minor_local_sha"
+        else
+          if [ "$minor_local_sha" != "$minor_remote_sha" ]; then
+            echo "⚠️ WARN: Updating remote minor tag '$MINOR' to $minor_local_sha (was $minor_remote_sha)"
+            git push --force "$REMOTE" "refs/tags/$MINOR"
+          else
+            echo "ℹ️ INFO: Minor tag '$MINOR' already up-to-date"
+          fi
+        fi
+
+        # Major tag: create or update
+        git tag -f -a "$MAJOR" -m "$FULL"
+        major_local_sha="$(tag_sha "$MAJOR")"
+        major_remote_sha="$(remote_tag_sha "$MAJOR")"
+        if [ -z "$major_remote_sha" ]; then
+          git push "$REMOTE" "refs/tags/$MAJOR"
+          echo "✅ OK: Created and pushed major tag '$MAJOR' -> $major_local_sha"
+        else
+          if [ "$major_local_sha" != "$major_remote_sha" ]; then
+            echo "⚠️ WARN: Updating remote major tag '$MAJOR' to $major_local_sha (was $major_remote_sha)"
+            git push --force "$REMOTE" "refs/tags/$MAJOR"
+          else
+            echo "ℹ️ INFO: Major tag '$MAJOR' already up-to-date"
+          fi
+        fi

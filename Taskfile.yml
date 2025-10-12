@@ -1,0 +1,144 @@
+version: '3'
+
+silent: false
+
+includes:
+  variables: ./Taskfile.variables.yml
+  scripts: ./Taskfile.scripts.yml
+
+tasks:
+  default:
+    desc: List tasks
+    cmds:
+      - task help
+
+  help:
+    desc: Detailed help
+    cmds:
+      - |
+        echo "Tasks:"
+        task --list
+        echo ""
+        echo "Environment:"
+        echo "  DOCKER_BUILD_CMD={{.DOCKER_BUILD_CMD}}"
+        echo "  DOCKER_NAME={{.DOCKER_NAME}}  DOCKER_USERNAME={{.DOCKER_USERNAME}}"
+        echo "  GHRC_NAME={{.GHRC_NAME}}  GITHUB_USERNAME={{.GITHUB_USERNAME}}"
+        echo "  LAST_RELEASE={{.LAST_RELEASE}}"  VERSION={{.VERSION}}   VERSION_FULL={{.VERSION_FULL}}
+        echo "  BRANCH={{.GIT_BRANCH}}  GIT_SHORT_SHA={{.GIT_SHORT_SHA}}"  GIT_SHA={{.GIT_SHA}}
+
+  pre-commit:
+    desc: Run all pre-commit hooks
+    cmds:
+      - pre-commit run --all-files
+
+  lint:
+    desc: Run all linters (Dockerfile, shell scripts, workflows, YAML)
+    cmds:
+      - task: lint:action
+      - task: lint:docker
+      - task: lint:shell
+      - task: lint:yaml
+
+  lint:action:
+    desc: Lint GitHub Actions workflows with actionlint
+    cmds:
+      - |
+        set -eu
+        if (set -o | grep -q pipefail) 2>/dev/null; then set -o pipefail; fi
+        if docker run --rm -i -v "$PWD:/work" -w /work rhysd/actionlint:latest -color; then
+          echo "✅ actionlint passed"
+        else
+          ec=$?
+          echo "❌ actionlint failed (exit $ec)"
+          exit "$ec"
+        fi
+
+  lint:docker:
+    desc: Lint Dockerfile with hadolint
+    cmds:
+      - |
+        set -eu
+        if (set -o | grep -q pipefail) 2>/dev/null; then set -o pipefail; fi
+        if docker run --rm -i -v "$PWD:/work" -w /work hadolint/hadolint:latest-debian hadolint Dockerfile; then
+          echo "✅ hadolint passed"
+        else
+          ec=$?
+          echo "❌ hadolint failed (exit $ec)"
+          exit "$ec"
+        fi
+
+  lint:shell:
+    desc: Lint shell scripts with shellcheck
+    cmds:
+      - |
+        set -eu
+        if (set -o | grep -q pipefail) 2>/dev/null; then set -o pipefail; fi
+        if docker run --rm -i -v "$PWD:/work" -w /work koalaman/shellcheck:stable -x -S style entrypoint.sh; then
+          echo "✅ shellcheck passed"
+        else
+          ec=$?
+          echo "❌ shellcheck failed (exit $ec)"
+          exit "$ec"
+        fi
+
+  lint:yaml:
+    desc: Lint YAML files with yamllint
+    cmds:
+      - |
+        set -eu
+        if (set -o | grep -q pipefail) 2>/dev/null; then set -o pipefail; fi
+        if docker run --rm -i -v "$PWD:/work" -w /work cytopia/yamllint -c .yamllint.yml .; then
+          echo "✅ yamllint passed"
+        else
+          ec=$?
+          echo "❌ yamllint failed (exit $ec)"
+          exit "$ec"
+        fi
+
+  docker:login:
+    desc: Login to hub.docker.com and ghcr.io
+    internal: true
+    env:
+      DOCKER_USERNAME: '{{.DOCKER_USERNAME}}'
+      GITHUB_USERNAME: '{{.GITHUB_USERNAME}}'
+    cmds:
+      - echo "Logging into Docker Hub as {{.DOCKER_USERNAME}}"
+      - echo "${DOCKER_TOKEN}" | docker login -u "{{.DOCKER_USERNAME}}" --password-stdin
+      - echo "Logging into GHCR as {{.GITHUB_USERNAME}}"
+      - echo "${GITHUB_TOKEN}" | docker login ghcr.io -u "{{.GITHUB_USERNAME}}" --password-stdin
+
+  docker:build:
+    desc: Build Docker image
+    cmds:
+      - '{{.DOCKER_BUILD_CMD}} {{.LABELS}} {{.TAGS}} --file={{.DOCKERFILE}} .'
+
+  docker:push:
+    desc: Build and push Docker images
+    deps:
+      - task: docker:login
+    cmds:
+      - '{{.DOCKER_BUILD_CMD}} --push {{.LABELS}} {{.TAGS}} --file={{.DOCKERFILE}} .'
+
+  version:update:
+    desc: Update version in README.md and action.yml
+    env:
+      LAST_DOCKER_FULL: '{{.DOCKER_NAME}}:{{.LAST_RELEASE}}'
+      NEW_DOCKER_FULL: '{{.DOCKER_NAME}}:{{.VERSION}}'
+      LAST_DOCKER_MAJOR: '{{.DOCKER_NAME}}:{{.LAST_MAJOR}}'
+      NEW_DOCKER_MAJOR: '{{.DOCKER_NAME}}:{{.VERSION_MAJOR}}'
+    cmds:
+      - echo Updating full version from {{.LAST_RELEASE}} to {{.VERSION}}
+      - echo Updating minor version from {{.LAST_MINOR}} to {{.VERSION_MINOR}}
+      - echo Updating major version from {{.LAST_MAJOR}} to {{.VERSION_MAJOR}}
+      - "{{.SED}} -i 's#{{.DOCKER_NAME}}:{{.LAST_RELEASE}}#{{.DOCKER_NAME}}:{{.VERSION}}#g' action.yml"
+      - "{{.SED}} -i 's#{{.DOCKER_NAME}}@{{.LAST_RELEASE}}#{{.DOCKER_NAME}}@{{.VERSION}}#g' README.md"
+      - "{{.SED}} -i 's#{{.GITHUB_NAME}}@{{.LAST_RELEASE}}#{{.GITHUB_NAME}}@{{.VERSION}}#g' README.md"
+      - "{{.SED}} -i 's#{{.DOCKER_NAME}}@{{.LAST_MINOR}}#{{.DOCKER_NAME}}@{{.VERSION_MINOR}}#g' README.md"
+      - "{{.SED}} -i 's#{{.GITHUB_NAME}}@{{.LAST_MINOR}}#{{.GITHUB_NAME}}@{{.VERSION_MINOR}}#g' README.md"
+      - "{{.SED}} -i 's#{{.DOCKER_NAME}}@{{.LAST_MAJOR}}#{{.DOCKER_NAME}}@{{.VERSION_MAJOR}}#g' README.md"
+      - "{{.SED}} -i 's#{{.GITHUB_NAME}}@{{.LAST_MAJOR}}#{{.GITHUB_NAME}}@{{.VERSION_MAJOR}}#g' README.md"
+
+  version:tag-release:
+    desc: Create full version tag if missing; create/update minor and major tags
+    cmds:
+      - task: scripts:version:tag-release
