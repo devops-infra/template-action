@@ -1,6 +1,6 @@
 version: '3'
 
-silent: false
+silent: true
 
 includes:
   variables: ./Taskfile.variables.yml
