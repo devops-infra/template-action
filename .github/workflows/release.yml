@@ -29,6 +29,8 @@ jobs:
           version: 3.x
 
       - name: Create and push git tags
+        env:
+          VERSION: ${{ github.event.inputs.version }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

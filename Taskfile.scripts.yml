@@ -27,23 +27,25 @@ tasks:
 
         echo "ℹ️ INFO: Tags - Full: $FULL | Minor: $MINOR | Major: $MAJOR"
 
-        # Full tag: create and push only if absent on remote
+        # Full tag: must NOT exist on remote; fail fast if it does
         full_remote_sha="$(remote_tag_sha "$FULL")"
-        if [ -z "$full_remote_sha" ]; then
-          if git rev-parse -q --verify "refs/tags/$FULL" >/dev/null 2>&1; then
-            echo "ℹ️ INFO: Full tag '$FULL' exists locally but not on remote; pushing"
-          else
-            echo "ℹ️ INFO: Creating full tag '$FULL'"
-            git tag -a "$FULL" -m "$FULL"
-          fi
-          git push "$REMOTE" "refs/tags/$FULL"
-          echo "✅ OK: Pushed full tag '$FULL'"
-        else
-          echo "ℹ️ INFO: Full tag '$FULL' already exists on remote; skipping"
+        if [ -n "$full_remote_sha" ]; then
+          echo "❌ ERROR: Full tag '$FULL' already exists on remote; aborting" >&2
+          exit 1
         fi
 
+        # Create full tag locally (if missing) and push
+        if git rev-parse --quiet --verify "refs/tags/$FULL" >/dev/null 2>&1; then
+          echo "ℹ️ INFO: Full tag '$FULL' exists locally but not on remote; pushing"
+        else
+          echo "ℹ️ INFO: Creating full tag '$FULL'"
+          git tag --annotate "$FULL" --message "$FULL"
+        fi
+        git push "$REMOTE" "refs/tags/$FULL"
+        echo "✅ OK: Pushed full tag '$FULL'"
+
         # Minor tag: create or update
-        git tag -f -a "$MINOR" -m "$FULL"
+        git tag --force --annotate "$MINOR" --message "$FULL"
         minor_local_sha="$(tag_sha "$MINOR")"
         minor_remote_sha="$(remote_tag_sha "$MINOR")"
         if [ -z "$minor_remote_sha" ]; then
@@ -59,7 +61,7 @@ tasks:
         fi
 
         # Major tag: create or update
-        git tag -f -a "$MAJOR" -m "$FULL"
+        git tag --force --annotate "$MAJOR" --message "$FULL"
         major_local_sha="$(tag_sha "$MAJOR")"
         major_remote_sha="$(remote_tag_sha "$MAJOR")"
         if [ -z "$major_remote_sha" ]; then

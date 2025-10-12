@@ -33,7 +33,7 @@
 
 ```yaml
     - name: Run the Action
-      uses: devops-infra/template-action@v1
+      uses: devops-infra/template-action@v0
       env:
         barfoo: foobaz
       with:
@@ -79,7 +79,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: devops-infra/template-action@v1
+      - uses: devops-infra/template-action@v0
 ```
 
 ### 🔀 Advanced
@@ -93,7 +93,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: devops-infra/template-action@v1
+      - uses: devops-infra/template-action@v0
         with:
           foobar: hello
           debug: 'true'
@@ -111,13 +111,13 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - uses: devops-infra/template-action@v1.0.0
+      - uses: devops-infra/template-action@v0.2.0
         id: Pin patch version
 
-      - uses: devops-infra/template-action@v1.0
+      - uses: devops-infra/template-action@v0.2
         id: Pin minor version
 
-      - uses: devops-infra/template-action@v1
+      - uses: devops-infra/template-action@v0
         id: Pin major version
 ```
 
