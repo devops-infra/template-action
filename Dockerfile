@@ -9,7 +9,7 @@ RUN set -eux ;\
   chmod +x /entrypoint.sh ;\
   apk update --no-cache ;\
   apk add --no-cache \
-    bash~=5.2.37 ;\
+    bash~=5.2 ;\
   # OTHER BINARIES TO INSTALL HERE \
   rm -rf /var/cache/* ;\
   rm -rf /root/.cache/*

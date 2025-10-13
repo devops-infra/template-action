@@ -65,14 +65,36 @@ tasks:
   docker:build:
     desc: Build Docker image
     cmds:
-      - '{{.DOCKER_BUILD_CMD}} {{.LABELS}} {{.TAGS}} --file={{.DOCKERFILE}} .'
+      - '{{.DOCKER_BUILD_START}} {{.DOCKER_BUILD_FINISH}}'
+      - |
+        image_inspect_out=$(docker image inspect {{.DOCKER_NAME}}:{{.VERSION_FULL}}{{.VERSION_SUFFIX}} | jq -r)
+        if [ -z "$image_inspect_out" ]; then
+          echo "❌ Docker build failed: Image not found"
+          exit 1
+        else
+          echo -e "\nDocker image inspect:"
+          echo "$image_inspect_out" | jq
+        fi
+
 
   docker:push:
     desc: Build and push Docker images
     deps:
       - task: docker:login
     cmds:
-      - '{{.DOCKER_BUILD_CMD}} --push {{.LABELS}} {{.TAGS}} --file={{.DOCKERFILE}} .'
+      - '{{.DOCKER_BUILD_START}} --push {{.DOCKER_BUILD_FINISH}}'
+      - |
+        image_inspect_out=$(docker image inspect {{.DOCKER_NAME}}:{{.VERSION_FULL}}{{.VERSION_SUFFIX}} | jq -r)
+        if [ -z "$image_inspect_out" ]; then
+          echo "❌ Docker build failed: Image not found"
+          exit 1
+        else
+          echo -e "\nDocker image inspect:"
+          echo "$image_inspect_out" | jq
+          image_sha=$(echo "$image_inspect_out" | jq -r '.[0].Id')
+          echo -e "\nDocker manifest inspect:"
+          docker manifest inspect "{{.DOCKER_NAME}}:{{.VERSION_FULL}}{{.VERSION_SUFFIX}}@$image_sha" | jq
+        fi
 
   version:set:
     desc: Update version in README.md and action.yml to specified VERSION
