@@ -103,27 +103,6 @@ vars:
         git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "unknown"
       fi
 
-  # Docker metadata
-  DOCKER_BUILD_CMD:
-    sh: |
-      if docker buildx version >/dev/null 2>&1; then
-        echo "docker buildx build --platform {{.PLATFORMS}}"
-      else
-        echo "docker build"
-      fi
-  USE_CACHE: '{{.USE_CACHE | default "true"}}'
-  CACHE_FROM: type=registry,ref={{.GHRC_NAME}}:cache
-  CACHE_TO: type=registry,ref={{.GHRC_NAME}}:cache,mode=max
-  TAGS: >-
-    --tag {{.DOCKER_NAME}}:{{.VERSION_FULL}}{{.VERSION_SUFFIX}}
-    --tag {{.DOCKER_NAME}}:{{.VERSION_MINOR}}{{.VERSION_SUFFIX}}
-    --tag {{.DOCKER_NAME}}:{{.VERSION_MAJOR}}{{.VERSION_SUFFIX}}
-    --tag {{.DOCKER_NAME}}:latest{{.VERSION_SUFFIX}}
-    --tag {{.GHRC_NAME}}:{{.VERSION_FULL}}{{.VERSION_SUFFIX}}
-    --tag {{.GHRC_NAME}}:{{.VERSION_MINOR}}{{.VERSION_SUFFIX}}
-    --tag {{.GHRC_NAME}}:{{.VERSION_MAJOR}}{{.VERSION_SUFFIX}}
-    --tag {{.GHRC_NAME}}:latest{{.VERSION_SUFFIX}}
-
   # Labels for http://label-schema.org/rc1/#build-time-labels
   # And for https://github.com/opencontainers/image-spec/blob/master/annotations.md
   LABEL_AUTHOR: '{{.LABEL_AUTHOR | default "Krzysztof Szyper christoph@shyper.pro"}}'
@@ -158,3 +137,42 @@ vars:
     --label org.opencontainers.image.licenses="{{.LABEL_LICENSE}}"
     --label org.opencontainers.image.title="{{.LABEL_NAME}}"
     --label org.opencontainers.image.description="{{.LABEL_DESCRIPTION}}"
+  ANNOTATIONS: >-
+    --annotation org.label-schema.build-date="{{.BUILD_DATE}}"
+    --annotation org.label-schema.name="{{.LABEL_NAME}}"
+    --annotation org.label-schema.description="{{.LABEL_DESCRIPTION}}"
+    --annotation org.label-schema.usage="{{.LABEL_DOCS_URL}}"
+    --annotation org.label-schema.url="{{.LABEL_HOMEPAGE}}"
+    --annotation org.label-schema.vcs-url="{{.LABEL_REPO_URL}}"
+    --annotation org.label-schema.vcs-ref="{{.GIT_SHA}}"
+    --annotation org.label-schema.vendor="{{.LABEL_VENDOR}}"
+    --annotation org.label-schema.version="{{.VERSION_FULL}}{{.VERSION_SUFFIX}}"
+    --annotation org.label-schema.schema-version="1.0"
+    --annotation org.opencontainers.image.created="{{.BUILD_DATE}}"
+    --annotation org.opencontainers.image.authors="{{.LABEL_AUTHOR}}"
+    --annotation org.opencontainers.image.url="{{.LABEL_HOMEPAGE}}"
+    --annotation org.opencontainers.image.documentation="{{.LABEL_DOCS_URL}}"
+    --annotation org.opencontainers.image.source="{{.LABEL_REPO_URL}}"
+    --annotation org.opencontainers.image.version="{{.VERSION_FULL}}{{.VERSION_SUFFIX}}"
+    --annotation org.opencontainers.image.revision="{{.GIT_SHA}}"
+    --annotation org.opencontainers.image.vendor="{{.LABEL_VENDOR}}"
+    --annotation org.opencontainers.image.licenses="{{.LABEL_LICENSE}}"
+    --annotation org.opencontainers.image.title="{{.LABEL_NAME}}"
+    --annotation org.opencontainers.image.description="{{.LABEL_DESCRIPTION}}"
+  TAGS: >-
+    --tag {{.DOCKER_NAME}}:{{.VERSION_FULL}}{{.VERSION_SUFFIX}}
+    --tag {{.DOCKER_NAME}}:{{.VERSION_MINOR}}{{.VERSION_SUFFIX}}
+    --tag {{.DOCKER_NAME}}:{{.VERSION_MAJOR}}{{.VERSION_SUFFIX}}
+    --tag {{.DOCKER_NAME}}:latest{{.VERSION_SUFFIX}}
+    --tag {{.GHRC_NAME}}:{{.VERSION_FULL}}{{.VERSION_SUFFIX}}
+    --tag {{.GHRC_NAME}}:{{.VERSION_MINOR}}{{.VERSION_SUFFIX}}
+    --tag {{.GHRC_NAME}}:{{.VERSION_MAJOR}}{{.VERSION_SUFFIX}}
+    --tag {{.GHRC_NAME}}:latest{{.VERSION_SUFFIX}}
+  DOCKER_BUILD_START:
+    sh: |
+      if docker buildx version >/dev/null 2>&1; then
+        echo "docker buildx build --platform {{.PLATFORMS}}"
+      else
+        echo "docker build"
+      fi
+  DOCKER_BUILD_FINISH: '{{.ANNOTATIONS}} {{.LABELS}} {{.TAGS}} --file={{.DOCKERFILE}} .'

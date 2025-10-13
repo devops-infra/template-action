@@ -11,11 +11,12 @@ tasks:
         task --list
         echo ""
         echo "Environment:"
-        echo "  DOCKER_BUILD_CMD={{.DOCKER_BUILD_CMD}}"
         echo "  DOCKER_NAME={{.DOCKER_NAME}}  DOCKER_USERNAME={{.DOCKER_USERNAME}}"
         echo "  GHRC_NAME={{.GHRC_NAME}}  GITHUB_USERNAME={{.GITHUB_USERNAME}}"
         echo "  LAST_RELEASE={{.LAST_RELEASE}}"  VERSION={{.VERSION}}   VERSION_FULL={{.VERSION_FULL}}
         echo "  BRANCH={{.GIT_BRANCH}}  GIT_SHORT_SHA={{.GIT_SHORT_SHA}}"  GIT_SHA={{.GIT_SHA}}
+        echo "  DOCKER_BUILD_START={{.DOCKER_BUILD_START}}"
+        echo "  DOCKER_BUILD_FINISH={{.DOCKER_BUILD_FINISH}}"
 
   version:tag-release:
     internal: true

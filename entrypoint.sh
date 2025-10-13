@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
+# Return code
+RET_CODE=0
+
 # Optional debug logging: pass `debug: true` in the action inputs to enable
 [[ "${INPUT_DEBUG:-false}" == "true" ]] && set -x
 
@@ -49,4 +52,4 @@ write_output "foobar=${FOOBAR}"
 write_output "barfoo=${FOOBAR}"
 
 info "Completed without errors."
-exit 0
+exit ${RET_CODE}

@@ -33,7 +33,7 @@
 
 ```yaml
     - name: Run the Action
-      uses: devops-infra/template-action@v1
+      uses: devops-infra/template-action@v1.0.2
       env:
         barfoo: foobaz
       with:
@@ -42,7 +42,7 @@
         # github_token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-### 🔨 Input Variables
+### 🔨 Environment Variables
 
 | Variable | Description                  |
 |:---------|:-----------------------------|
@@ -79,6 +79,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+
       - uses: devops-infra/template-action@v1
 ```
 
@@ -93,6 +94,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+
       - uses: devops-infra/template-action@v1
         with:
           foobar: hello
@@ -111,7 +113,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - uses: devops-infra/template-action@v1.0.1
+      - uses: devops-infra/template-action@v1.0.2
         id: Pin patch version
 
       - uses: devops-infra/template-action@v1.0
@@ -170,6 +172,7 @@ This action supports three tag levels for flexible versioning:
 ## 🤝 Contributing
 Contributions are welcome! See [CONTRIBUTING](https://github.com/devops-infra/.github/blob/master/CONTRIBUTING.md).
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
 
 ## 📄 License
 MIT — see [LICENSE](LICENSE).
