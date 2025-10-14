@@ -57,11 +57,17 @@ jobs:
           image: tonistiigi/binfmt:latest
           platforms: amd64,arm64
 
+      - name: Get Docker commands
+        run: task docker:cmds
+
       - name: Build and push test image
         env:
           DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: task docker:push
+
+      - name: Inspect image
+        run: task docker:push:inspect
 
   pull-request:
     name: Pull Request
@@ -73,11 +79,14 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
 
+      - name: Install Task
+        uses: arduino/setup-task@v2.0.0
+        with:
+          version: 3.x
+
       - name: Get template
         shell: bash
-        run: |
-          mkdir -p .tmp
-          curl -LsS https://raw.githubusercontent.com/devops-infra/.github/master/PULL_REQUEST_TEMPLATE.md -o .tmp/PULL_REQUEST_TEMPLATE.md
+        run: task git:get-pr-template
 
       - name: Create Pull Request
         uses: devops-infra/action-pull-request@v0.6

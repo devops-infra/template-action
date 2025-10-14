@@ -13,6 +13,15 @@ warn()  { printf "[WARN] ⚠️ %s\n" "$*" >&2; }
 #shellcheck disable=SC2329
 error() { printf "[ERROR] ❌ %s\n" "$*" >&2; }
 
+write_output() {
+  local kv="$1"
+  if [[ -n "${GITHUB_OUTPUT:-}" ]]; then
+    printf "%s\n" "${kv}" >> "${GITHUB_OUTPUT}"
+  else
+    info "[LOCAL] output -> ${kv}"
+  fi
+}
+
 trap 'error "Action failed. Check logs above."' ERR
 
 # Inputs
@@ -36,16 +45,6 @@ fi
 # Main action logic (placeholder)
 info "Using input 'foobar' in main action."
 # ... your action logic goes here ...
-
-# Helper to write outputs (works locally and on GitHub runners)
-write_output() {
-  local kv="$1"
-  if [[ -n "${GITHUB_OUTPUT:-}" ]]; then
-    printf "%s\n" "${kv}" >> "${GITHUB_OUTPUT}"
-  else
-    info "[LOCAL] output -> ${kv}"
-  fi
-}
 
 # Set outputs
 write_output "foobar=${FOOBAR}"
