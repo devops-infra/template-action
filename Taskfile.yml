@@ -94,6 +94,11 @@ tasks:
     cmds:
       - echo -e '{{.DOCKER_BUILD_START}} {{.DOCKER_BUILD_FINISH}}' | {{.SED}} 's/--/ \\\n  --/g'
 
+  version:get:
+    desc: Get current version
+    cmds:
+      - echo "{{.VERSION}}"
+
   version:set:
     desc: Update version in README.md and action.yml to specified VERSION
     cmds:

@@ -10,7 +10,7 @@
 
 ## ✨ Features
 
-* Baseline for GitHub Actions for [Devops-Infra](https://shyper.pro/portfolio/projects/actions/) projects
+* Baseline for GitHub Actions for [DevOps-Infra](https://shyper.pro/portfolio/projects/actions/) projects
 
 
 ## 📊 Badges

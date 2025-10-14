@@ -30,11 +30,14 @@ jobs:
           version: 3.x
 
       - name: Create and push git tags
+        id: version
         env:
           VERSION_OVERRIDE: ${{ github.event.inputs.version }}
+          VERSION_SUFFIX: ""
         run: |
           task git:set-config
           task version:tag-release
+          echo "REL_VERSION=$(task version:get)" >> "$GITHUB_OUTPUT"
 
       - name: Install Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -70,8 +73,8 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.event.inputs.version }}
-          name: ${{ github.event.inputs.version }}
+          tag_name: ${{ steps.version.outputs.REL_VERSION }}
+          name: ${{ steps.version.outputs.REL_VERSION }}
           draft: false
           prerelease: false
           generate_release_notes: true
