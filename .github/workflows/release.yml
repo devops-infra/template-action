@@ -7,6 +7,7 @@ on:
         description: Release version (e.g., v1.2.3)
         required: true
         type: string
+        default: __TAKEN_FROM_ACTION_YML__
 
 permissions:
   contents: write
@@ -30,10 +31,9 @@ jobs:
 
       - name: Create and push git tags
         env:
-          VERSION: ${{ github.event.inputs.version }}
+          VERSION_OVERRIDE: ${{ github.event.inputs.version }}
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          task git:set-config
           task version:tag-release
 
       - name: Install Docker Buildx
@@ -47,13 +47,25 @@ jobs:
           image: tonistiigi/binfmt:latest
           platforms: amd64,arm64
 
+      - name: Get Docker commands
+        env:
+          VERSION_OVERRIDE: ${{ github.event.inputs.version }}
+          VERSION_SUFFIX: ""
+        run: task docker:cmds
+
       - name: Build and push Docker images
         env:
           DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VERSION: ${{ github.event.inputs.version }}
+          VERSION_OVERRIDE: ${{ github.event.inputs.version }}
           VERSION_SUFFIX: ""
         run: task docker:push
+
+      - name: Inspect image
+        env:
+          VERSION_OVERRIDE: ${{ github.event.inputs.version }}
+          VERSION_SUFFIX: ""
+        run: task docker:push:inspect
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2

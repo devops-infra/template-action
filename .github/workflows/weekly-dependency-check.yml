@@ -36,8 +36,11 @@ jobs:
           image: tonistiigi/binfmt:latest
           platforms: amd64,arm64
 
+      - name: Get Docker commands
+        run: task docker:cmds
+
       - name: Build and push test image
-        env:
-          DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: task docker:push
+
+      - name: Inspect image
+        run: task docker:push:inspect

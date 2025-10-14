@@ -62,14 +62,18 @@ vars:
       else
         printf "%s" "-test"
       fi
+  VERSION_OVERRIDE:
+    sh: echo "__TAKEN_FROM_ACTION_YML__"
+  VERSION_FROM_ACTION_YML:
+    sh: 'grep "image: docker://{{.DOCKER_NAME}}:" action.yml | cut -d ":" -f 4'
   VERSION:
     sh: |
-      if [ -n "${VERSION:-}" ]; then
-        echo "${VERSION}"
-      elif [ -n "{{.LAST_RELEASE}}" ]; then
+      if [ "${VERSION_OVERRIDE}" = "__TAKEN_FROM_ACTION_YML__" ]; then
+        echo "{{.VERSION_FROM_ACTION_YML}}"
+      elif [ -z "${VERSION_OVERRIDE}" ]; then
         echo "{{.LAST_RELEASE}}"
       else
-        echo "v0.0.0"
+        echo "${VERSION_OVERRIDE}"
       fi
   VERSION_NO_V:
     sh: v="{{.VERSION}}"; echo "${v#v}"
@@ -115,7 +119,30 @@ vars:
   LABEL_HOMEPAGE: '{{.LABEL_HOMEPAGE | default "https://shyper.pro"}}'
   LABEL_VENDOR: '{{.LABEL_VENDOR | default "DevOps-Infra"}}'
   LABEL_LICENSE: '{{.LABEL_LICENSE | default "MIT"}}'
+  ANNOTATIONS: >-
+    --annotation manifest:org.label-schema.schema-version="1.0"
+    --annotation manifest:org.label-schema.build-date="{{.BUILD_DATE}}"
+    --annotation manifest:org.label-schema.name="{{.LABEL_NAME}}"
+    --annotation manifest:org.label-schema.description="{{.LABEL_DESCRIPTION}}"
+    --annotation manifest:org.label-schema.usage="{{.LABEL_DOCS_URL}}"
+    --annotation manifest:org.label-schema.url="{{.LABEL_HOMEPAGE}}"
+    --annotation manifest:org.label-schema.vcs-url="{{.LABEL_REPO_URL}}"
+    --annotation manifest:org.label-schema.vcs-ref="{{.GIT_SHA}}"
+    --annotation manifest:org.label-schema.vendor="{{.LABEL_VENDOR}}"
+    --annotation manifest:org.label-schema.version="{{.VERSION_FULL}}{{.VERSION_SUFFIX}}"
+    --annotation manifest:org.opencontainers.image.created="{{.BUILD_DATE}}"
+    --annotation manifest:org.opencontainers.image.authors="{{.LABEL_AUTHOR}}"
+    --annotation manifest:org.opencontainers.image.url="{{.LABEL_HOMEPAGE}}"
+    --annotation manifest:org.opencontainers.image.documentation="{{.LABEL_DOCS_URL}}"
+    --annotation manifest:org.opencontainers.image.source="{{.LABEL_REPO_URL}}"
+    --annotation manifest:org.opencontainers.image.version="{{.VERSION_FULL}}{{.VERSION_SUFFIX}}"
+    --annotation manifest:org.opencontainers.image.revision="{{.GIT_SHA}}"
+    --annotation manifest:org.opencontainers.image.vendor="{{.LABEL_VENDOR}}"
+    --annotation manifest:org.opencontainers.image.licenses="{{.LABEL_LICENSE}}"
+    --annotation manifest:org.opencontainers.image.title="{{.LABEL_NAME}}"
+    --annotation manifest:org.opencontainers.image.description="{{.LABEL_DESCRIPTION}}"
   LABELS: >-
+    --label org.label-schema.schema-version="1.0"
     --label org.label-schema.build-date="{{.BUILD_DATE}}"
     --label org.label-schema.name="{{.LABEL_NAME}}"
     --label org.label-schema.description="{{.LABEL_DESCRIPTION}}"
@@ -125,7 +152,6 @@ vars:
     --label org.label-schema.vcs-ref="{{.GIT_SHA}}"
     --label org.label-schema.vendor="{{.LABEL_VENDOR}}"
     --label org.label-schema.version="{{.VERSION_FULL}}{{.VERSION_SUFFIX}}"
-    --label org.label-schema.schema-version="1.0"
     --label org.opencontainers.image.created="{{.BUILD_DATE}}"
     --label org.opencontainers.image.authors="{{.LABEL_AUTHOR}}"
     --label org.opencontainers.image.url="{{.LABEL_HOMEPAGE}}"
@@ -137,28 +163,6 @@ vars:
     --label org.opencontainers.image.licenses="{{.LABEL_LICENSE}}"
     --label org.opencontainers.image.title="{{.LABEL_NAME}}"
     --label org.opencontainers.image.description="{{.LABEL_DESCRIPTION}}"
-  ANNOTATIONS: >-
-    --annotation org.label-schema.build-date="{{.BUILD_DATE}}"
-    --annotation org.label-schema.name="{{.LABEL_NAME}}"
-    --annotation org.label-schema.description="{{.LABEL_DESCRIPTION}}"
-    --annotation org.label-schema.usage="{{.LABEL_DOCS_URL}}"
-    --annotation org.label-schema.url="{{.LABEL_HOMEPAGE}}"
-    --annotation org.label-schema.vcs-url="{{.LABEL_REPO_URL}}"
-    --annotation org.label-schema.vcs-ref="{{.GIT_SHA}}"
-    --annotation org.label-schema.vendor="{{.LABEL_VENDOR}}"
-    --annotation org.label-schema.version="{{.VERSION_FULL}}{{.VERSION_SUFFIX}}"
-    --annotation org.label-schema.schema-version="1.0"
-    --annotation org.opencontainers.image.created="{{.BUILD_DATE}}"
-    --annotation org.opencontainers.image.authors="{{.LABEL_AUTHOR}}"
-    --annotation org.opencontainers.image.url="{{.LABEL_HOMEPAGE}}"
-    --annotation org.opencontainers.image.documentation="{{.LABEL_DOCS_URL}}"
-    --annotation org.opencontainers.image.source="{{.LABEL_REPO_URL}}"
-    --annotation org.opencontainers.image.version="{{.VERSION_FULL}}{{.VERSION_SUFFIX}}"
-    --annotation org.opencontainers.image.revision="{{.GIT_SHA}}"
-    --annotation org.opencontainers.image.vendor="{{.LABEL_VENDOR}}"
-    --annotation org.opencontainers.image.licenses="{{.LABEL_LICENSE}}"
-    --annotation org.opencontainers.image.title="{{.LABEL_NAME}}"
-    --annotation org.opencontainers.image.description="{{.LABEL_DESCRIPTION}}"
   TAGS: >-
     --tag {{.DOCKER_NAME}}:{{.VERSION_FULL}}{{.VERSION_SUFFIX}}
     --tag {{.DOCKER_NAME}}:{{.VERSION_MINOR}}{{.VERSION_SUFFIX}}

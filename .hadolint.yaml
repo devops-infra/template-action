@@ -1,21 +1,24 @@
-failure-threshold: warning
+failure-threshold: error
 format: tty
-#ignored: [string]
 strict-labels: false
-#label-schema:
-#  author: text
-#  contact: email
-#  created: rfc3339
-#  version: semver
-#  documentation: url
-#  git-revision: hash
-#  license: spdx
 no-color: false
-no-fail: boolean
-#override:
-#  error: [string]
-#  warning: [string]
-#  info: [string]
-#  style: [string]
+no-fail: false
 disable-ignore-pragma: false
-trustedRegistries: [docker.io]
+trustedRegistries:
+  - docker.io
+  - ghcr.io
+
+# ignored: [string]
+# label-schema:
+#   author: text
+#   contact: email
+#   created: rfc3339
+#   version: semver
+#   documentation: url
+#   git-revision: hash
+#   license: spdx
+# override:
+#   error: [string]
+#   warning: [string]
+#   info: [string]
+#   style: [string]
