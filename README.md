@@ -4,6 +4,7 @@
 
 
 ## 📦 Available on
+
 - **Docker Hub:** [devopsinfra/template-action:latest](https://hub.docker.com/repository/docker/devopsinfra/template-action)
 - **GitHub Packages:** [ghcr.io/devops-infra/template-action:latest](https://github.com/devops-infra/template-action/pkgs/container/template-action)
 
@@ -14,6 +15,7 @@
 
 
 ## 📊 Badges
+
 [
 ![GitHub repo](https://img.shields.io/badge/GitHub-devops--infra%2Ftemplate--action-blueviolet.svg?style=plastic&logo=github)
 ![GitHub last commit](https://img.shields.io/github/last-commit/devops-infra/template-action?color=blueviolet&logo=github&style=plastic&label=Last%20commit)
@@ -49,7 +51,7 @@
 | `barfoo` | Sample environment variable. |
 
 
-### 🔧 Input Paremeters
+### 🔧 Input Parameters
 
 | Input          | Required | Default  | Description                         |
 |:---------------|:--------:|:--------:|:------------------------------------|
@@ -69,6 +71,7 @@
 ## 💻 Usage Examples
 
 ### 📝 Basic
+
 Run the Action with defaults.
 
 ```yaml
@@ -84,6 +87,7 @@ jobs:
 ```
 
 ### 🔀 Advanced
+
 Run the Action with set inputs.
 
 ```yaml
@@ -137,7 +141,7 @@ Workflows included:
 Prerequisites:
 - Docker with Buildx,
 - Task (installed via workflow or from https://taskfile.dev),
-- gnu-sed if on macOS (brew install gnu-sed),
+- gnu-sed if on macOS (`brew install gnu-sed`),
 - pre-commit (optional).
 
 Common tasks:
@@ -156,13 +160,14 @@ DOCKER_TOKEN=... GITHUB_TOKEN=... task docker:push
 Pre-commit hooks:
 
 ```bash
-pipx install pre-commit  # or pip install --user pre-commit
-pre-commit install
-pre-commit run --all-files
+brew install pre-commit
+task pre-commit:install
+task pre-commit
 ```
 
 
 ## 🏷️ Version Tags: vX, vX.Y, vX.Y.Z
+
 This action supports three tag levels for flexible versioning:
 - `vX`: latest patch of the major version (e.g., `v1`).
 - `vX.Y`: latest patch of the minor version (e.g., `v1.2`).
@@ -170,15 +175,18 @@ This action supports three tag levels for flexible versioning:
 
 
 ## 🤝 Contributing
+
 Contributions are welcome! See [CONTRIBUTING](https://github.com/devops-infra/.github/blob/master/CONTRIBUTING.md).
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 
 ## 📄 License
-MIT — see [LICENSE](LICENSE).
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 
 ## 💬 Support
+
 If you have any questions or need help, please:
-- Create an [issue](https://github.com/devops-infra/template-action/issues)
-- Star this repository if you find it useful!
+- 📝 Create an [issue](https://github.com/devops-infra/template-action/issues)
+- 🌟 Star this repository if you find it useful!
