@@ -4,21 +4,17 @@ updates:
   - package-ecosystem: github-actions
     directory: /
     schedule:
-      interval: daily
+      interval: weekly
     assignees:
       - ChristophShyper
-    labels:
-      - automatic
 
   # Enable version updates for Docker
   - package-ecosystem: docker
     directory: /
     schedule:
-      interval: daily
+      interval: weekly
     assignees:
       - ChristophShyper
-    labels:
-      - automatic
 
 #  # Enable version updates for pip
 #  - package-ecosystem: pip
@@ -27,5 +23,3 @@ updates:
 #      interval: daily
 #    assignees:
 #      - ChristophShyper
-#    labels:
-#      - automatic
