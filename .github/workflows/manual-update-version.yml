@@ -71,6 +71,17 @@ jobs:
       - name: Push to release branch
         uses: devops-infra/action-commit-push@v1
         with:
-          github_token: ${{ secrets.PUSH_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           commit_message: ":rocket: Bump version to ${{ steps.version.outputs.REL_VERSION }}"
           target_branch: ${{ format('release/{0}', steps.version.outputs.REL_VERSION) }}
+
+      - name: Get template
+        run: task git:get-pr-template
+
+      - name: Create Pull Request
+        uses: devops-infra/action-pull-request@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          assignee: ${{ github.actor }}
+          template: .tmp/PULL_REQUEST_TEMPLATE.md
+          get_diff: true
