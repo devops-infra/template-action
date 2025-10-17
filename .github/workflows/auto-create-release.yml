@@ -33,7 +33,7 @@ jobs:
         env:
           VERSION_SUFFIX: ""
         run: |
-          run: task lint
+          task lint
           task git:set-config
           task version:tag-release
           echo "REL_VERSION=$(task version:get)" >> "$GITHUB_OUTPUT"
