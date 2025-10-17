@@ -1,13 +1,11 @@
-name: Manual Release
+name: (Auto) Create release
 
 on:
-  workflow_dispatch:
-    inputs:
-      version:
-        description: Release version (e.g., v1.2.3)
-        required: true
-        type: string
-        default: __TAKEN_FROM_ACTION_YML__
+  pull_request:
+    types: [closed]
+  push:
+    branches:
+      - release/**
 
 permissions:
   contents: write
@@ -32,7 +30,6 @@ jobs:
       - name: Create and push git tags
         id: version
         env:
-          VERSION_OVERRIDE: ${{ github.event.inputs.version }}
           VERSION_SUFFIX: ""
         run: |
           task git:set-config
@@ -52,25 +49,22 @@ jobs:
 
       - name: Get Docker commands
         env:
-          VERSION_OVERRIDE: ${{ github.event.inputs.version }}
           VERSION_SUFFIX: ""
         run: task docker:cmds
 
-      - name: Build and push Docker images
+      - name: Build and Push
         env:
           DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VERSION_OVERRIDE: ${{ github.event.inputs.version }}
           VERSION_SUFFIX: ""
         run: task docker:push
 
       - name: Inspect image
         env:
-          VERSION_OVERRIDE: ${{ github.event.inputs.version }}
           VERSION_SUFFIX: ""
         run: task docker:push:inspect
 
-      - name: Create GitHub Release
+      - name: Create GitHub release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.version.outputs.REL_VERSION }}
@@ -81,7 +75,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Update Docker Hub description
+      - name: Update Docker hub description
         uses: peter-evans/dockerhub-description@v5
         with:
           username: ${{ vars.DOCKER_USERNAME }}
