@@ -13,6 +13,7 @@ permissions:
 
 jobs:
   release:
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
     name: Create Release
     runs-on: ubuntu-24.04-arm
     steps:
