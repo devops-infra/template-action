@@ -71,6 +71,6 @@ jobs:
       - name: Push to release branch
         uses: devops-infra/action-commit-push@v1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.PUSH_TOKEN }}
           commit_message: ":rocket: Bump version to ${{ steps.version.outputs.REL_VERSION }}"
           target_branch: ${{ format('release/{0}', steps.version.outputs.REL_VERSION) }}
