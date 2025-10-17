@@ -77,7 +77,11 @@ jobs:
           target_branch: ${{ format('release/{0}', steps.version.outputs.REL_VERSION) }}
 
       - name: Get template
-        run: task git:get-pr-template
+        env:
+          VERSION_SUFFIX: ""
+        run: |
+          task git:set-config
+          task git:get-pr-template
 
       - name: Create Pull Request
         uses: devops-infra/action-pull-request@v1
