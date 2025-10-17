@@ -36,6 +36,9 @@ jobs:
           image: tonistiigi/binfmt:latest
           platforms: amd64,arm64
 
+      - name: Run linters
+        run: task lint
+
       - name: Get Docker commands
         run: task docker:cmds
 
