@@ -131,9 +131,32 @@ jobs:
 
 ## 🏗️ CI/CD
 Workflows included:
-- Pull Request: lint (hadolint, shellcheck, actionlint, yamllint), build and push a test image (test-<branch>), and a self-test running this action from source.
-- Release (manual): updates action.yml (pins exact vX.Y.Z) and docs (major vX), creates vX.Y.Z and updates vX, vX.Y tags, builds and pushes multi-arch images, and publishes a GitHub Release.
-- Weekly: builds and pushes a test image from the latest release tag (test-<tag>) to keep registries active and catch dependency issues.
+- (Auto) Create Pull Request (`.github/workflows/auto-create-pull-request.yml`)
+  - Trigger: push to any branch except `master` and `dependabot/**`.
+  - Jobs:
+    - Lint
+    - Build and push multi-platform test image, and inspect manifest
+    - Create pull request
+- (Auto) Create release (`.github/workflows/auto-create-release.yml`)
+  - Trigger: `pull_request` closed and `push` to `release/**` (runs only for merged PRs from `release/`)
+  - Jobs:
+    - Lint
+    - Tagging: create `vX.Y.Z`; update `vX.Y` and `vX` (fails if full tag exists on remote)
+    - Build and push multi-platform image, and inspect manifest
+    - Publish GitHub Release
+    - Update Docker hub description
+- (Cron) Weekly dependency build (`.github/workflows/cron-check-dependencies.yml`)
+  - Trigger: Weekly on Monday at 08:00 UTC
+  - Jobs:
+    - Lint
+    - Build and push multi-platform test image, and inspect manifest
+- (Manual) Update version (`.github/workflows/manual-update-version.yml`)
+  - Trigger: manual `workflow_dispatch` with `type` (`patch|minor|major|set`) xor `version` when `type=set`
+pushes to `release/**` branch and creates a pull request to create a new release
+  - Jobs:
+    - Update version: bump or set; output `REL_VERSION`
+    - Build and push multi-platform image, and inspect manifest
+    - Create pull request, approve to create a release
 
 
 ## 🧑‍💻 Development
