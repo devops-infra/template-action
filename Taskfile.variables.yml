@@ -51,10 +51,6 @@ vars:
       curl --silent "https://api.github.com/repos/{{.GITHUB_ORG_NAME}}/{{.GITHUB_REPO}}/releases/latest" | \
         grep '"tag_name":' | \
         {{.SED}} -E 's/.*"([^"]+)".*/\1/'
-  LAST_MAJOR:
-    sh: echo "{{.LAST_RELEASE}}" | awk -F\. '{print $1}'
-  LAST_MINOR:
-    sh: echo "{{.LAST_RELEASE}}" | awk -F\. '{print $1"."$2}'
   VERSION_SUFFIX:
     sh: |
       if [ "${VERSION_SUFFIX+x}" = "x" ]; then
@@ -66,6 +62,10 @@ vars:
     sh: echo "__TAKEN_FROM_ACTION_YML__"
   VERSION_FROM_ACTION_YML:
     sh: 'grep "image: docker://{{.DOCKER_NAME}}:" action.yml | cut -d ":" -f 4'
+  MAJOR_FROM_ACTION_YML:
+    sh: echo "{{.VERSION_FROM_ACTION_YML}}" | awk -F\. '{print $1}'
+  MINOR_FROM_ACTION_YML:
+    sh: echo "{{.VERSION_FROM_ACTION_YML}}" | awk -F\. '{print $1"."$2}'
   VERSION:
     sh: |
       if [ "${VERSION_OVERRIDE}" = "__TAKEN_FROM_ACTION_YML__" ]; then
