@@ -41,7 +41,7 @@ This action supports three tag levels for flexible versioning:
 ## 📖 API Reference
 ```yaml
     - name: Run the Action
-      uses: devops-infra/template-action@v1.1.0
+      uses: devops-infra/template-action@v1.0.2
       env:
         barfoo: foobaz
       with:
@@ -118,10 +118,10 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - uses: devops-infra/template-action@v1.1.0
+      - uses: devops-infra/template-action@v1.0.2
         id: Pin patch version
 
-      - uses: devops-infra/template-action@v1.1
+      - uses: devops-infra/template-action@v1.0
         id: Pin minor version
 
       - uses: devops-infra/template-action@v1
