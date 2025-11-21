@@ -2,6 +2,10 @@ version: '3'
 
 silent: true
 
+vars:
+  PR_TEMPLATE: https://raw.githubusercontent.com/devops-infra/.github/master/PULL_REQUEST_TEMPLATE.md
+  TEMPLATE_REPO_BASE_URL: https://raw.githubusercontent.com/devops-infra/template-action/refs/heads/master
+
 tasks:
   pre-commit:
     desc: Run all pre-commit hooks
