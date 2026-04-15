@@ -133,7 +133,7 @@ jobs:
 
 ## 🏗️ CI/CD
 Workflows included:
-- (Auto) Create Pull Request (`.github/workflows/auto-create-pull-request.yml`)
+- (Auto) Pull Request Create (`.github/workflows/auto-pull-request-create.yml`)
   - Trigger: push to any branch except `master` and `dependabot/**`.
   - Jobs:
     - Lint
@@ -147,12 +147,12 @@ Workflows included:
     - Build and push multi-platform image, and inspect manifest
     - Publish GitHub Release
     - Update Docker hub description
-- (Cron) Weekly dependency build (`.github/workflows/cron-check-dependencies.yml`)
+- (Cron) Weekly dependency build (`.github/workflows/cron-dependency-update.yml`)
   - Trigger: Weekly on Monday at 08:00 UTC
   - Jobs:
     - Lint
     - Build and push multi-platform test image, and inspect manifest
-- (Manual) Update version (`.github/workflows/manual-update-version.yml`)
+- (Manual) Update version (`.github/workflows/manual-release-create.yml`)
   - Trigger: manual `workflow_dispatch` with `type` (`patch|minor|major|set`) xor `version` when `type=set`
 pushes to `release/**` branch and creates a pull request to create a new release
   - Jobs:
@@ -229,4 +229,4 @@ Recommended setup:
 - GitHub Actions: set repo variables for the four values above, and secrets for `DOCKER_TOKEN` and `GITHUB_TOKEN`.
 
 Publish images without a release:
-- Run the `(Manual) Update Version` workflow with `build_only: true` to build and push images without tagging a release.
+- Run the `(Manual) Release Create` workflow with `build_only: true` to build and push images without tagging a release.
