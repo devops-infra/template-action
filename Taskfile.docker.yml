@@ -43,7 +43,7 @@ tasks:
   docker:cmds:
     desc: Show full docker build command
     cmds:
-      - echo -e '{{.DOCKER_BUILD_START}} {{.DOCKER_BUILD_FINISH}}' | {{.SED}} 's/--/ \\\n  --/g'
+      - echo -e '{{.DOCKER_BUILD_START}} {{.DOCKER_BUILD_FINISH}}' | {{.SED}} 's/--/ \\\n+  --/g'
 
   docker:build:
     desc: Build Docker image
@@ -80,7 +80,6 @@ tasks:
         rc=$?
         set -e
 
-        # Validate that docker inspect returned a non-empty array with an Id
         has_local=0
         if [ "$rc" -eq 0 ] && [ -n "$image_inspect_out" ]; then
           if echo "$image_inspect_out" | jq -e 'type=="array" and (length > 0) and \
