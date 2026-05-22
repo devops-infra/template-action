@@ -66,7 +66,7 @@ This action supports three tag levels for flexible versioning:
 | `github_token` |    No    |          | For authenticated GitHub requests.  |
 
 
-### 📤 Outputs Parameters
+### 📤 Output Parameters
 | Output   | Description                          |
 |:---------|:-------------------------------------|
 | `foobar` | Echo of provided `foobar` input.     |
@@ -75,7 +75,7 @@ This action supports three tag levels for flexible versioning:
 
 ## 💻 Usage Examples
 
-### 📝 Basic
+### 📝 Basic Example
 Run the Action with defaults.
 
 ```yaml
@@ -90,7 +90,7 @@ jobs:
       - uses: devops-infra/template-action@v1
 ```
 
-### 🔀 Advanced
+### 🔀 Advanced Example
 Run the Action with set inputs.
 
 ```yaml
@@ -109,7 +109,10 @@ jobs:
 ```
 
 ### 🎯 Use specific version
-Run the Action with a specific version tag.
+Pick the tag level based on your stability needs:
+- `vX.Y.Z`: exact immutable release (most predictable)
+- `vX.Y`: latest patch within one minor line
+- `vX`: latest patch within one major line
 
 ```yaml
 name: Run the Action on each commit
