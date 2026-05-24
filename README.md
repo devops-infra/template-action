@@ -85,7 +85,7 @@ jobs:
   template-action:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - uses: devops-infra/template-action@v1
 ```
@@ -100,7 +100,7 @@ jobs:
   template-action:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - uses: devops-infra/template-action@v1
         with:
@@ -121,7 +121,7 @@ jobs:
   template-action:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - uses: devops-infra/template-action@v1.0.7
         id: Pin patch version
@@ -204,6 +204,34 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 If you have any questions or need help, please:
 - 📝 Create an [issue](https://github.com/devops-infra/template-action/issues)
 - 🌟 Star this repository if you find it useful!
+
+## 🧪 End-to-End Validation
+Template action E2E validation is now part of the centralized org flow.
+
+- Pull requests: runs automatically via reusable org workflow hooks.
+- Release branch prepare: runs automatically against release candidate refs.
+- Release create: runs automatically against production release refs.
+
+Manual execution options:
+
+- Repository-local caller workflow: `.github/workflows/manual-e2e-validate.yml`
+- Centralized workflow directly: `devops-infra/triglav/.github/workflows/e2e-action-template-action.yml`
+
+Execution modes:
+
+- `mode=ref` validates ref-oriented E2E paths against stable pinned action refs.
+- `mode=image` is wired but currently placeholder-only in the central E2E workflow for this action.
+
+Example trigger inputs:
+
+```text
+mode=ref
+```
+
+```text
+mode=image
+image_tag=v1.2.3-test
+```
 
 ## Forking
 To publish images from a fork, set these variables so Task uses your registry identities:
