@@ -1,23 +1,19 @@
-FROM ubuntu:questing-20251217
-
-# Disable interactive mode
-ENV DEBIAN_FRONTEND noninteractive
+FROM alpine:3.23.4
 
 # Copy all needed files
 COPY entrypoint.sh /
+COPY alpine-packages.txt /tmp/alpine-packages.txt
 
 # Install needed packages
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
-# hadolint ignore=DL3008
-RUN set -eux ;\
-  chmod +x /entrypoint.sh ;\
-  apt-get update -y ;\
-  echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections ;\
-  apt-get install --no-install-recommends -y \
-    jq ;\
-  # OTHER BINARIES TO INSTALL HERE \
-  apt-get clean ;\
-  rm -rf /var/lib/apt/lists/*
+SHELL ["/bin/sh", "-euxo", "pipefail", "-c"]
+# hadolint ignore=DL3018
+RUN set -eux; \
+  xargs -r apk add --no-cache < /tmp/alpine-packages.txt; \
+  chmod +x /entrypoint.sh; \
+  jq --version; \
+  rm -rf /var/cache/*; \
+  rm -rf /root/.cache/*; \
+  rm -rf /tmp/*
 
 # Finish up
 WORKDIR /github/workspace
